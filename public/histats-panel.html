@@ -506,14 +506,13 @@
             <table class="histats-panel-table">
                 <thead class="histats-table-header">
                     <tr>
-                        <th class="th-id">Website id</th>
-                        <th>Url Website</th>
-                        <th style="text-align:right; padding-right:20px;">Actions</th>
+                        <th style="padding-left:16px;">Url Website</th>
+                        <th style="text-align:right; padding-right:20px; width:170px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="histatsTableBody">
                     <tr>
-                        <td colspan="3" style="text-align:center; padding:30px; color:#64748b;">
+                        <td colspan="2" style="text-align:center; padding:30px; color:#64748b;">
                             Memuat daftar website...
                         </td>
                     </tr>
@@ -725,16 +724,15 @@
             return 5000000 + Math.abs(hash % 900000);
         }
 
-        // Render Table Rows (Exact Histats Design)
+        // Render Table Rows
         function renderTable(sites) {
             const tbody = document.getElementById('histatsTableBody');
             if (!sites || sites.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:30px; color:#64748b;">Belum ada website. Klik <strong>+ Add a website</strong> di atas untuk menambahkan.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:30px; color:#64748b;">Belum ada website. Klik <strong>+ Add a website</strong> di atas untuk menambahkan.</td></tr>';
                 return;
             }
 
             tbody.innerHTML = sites.map(site => {
-                const numericId = getNumericId(site.id);
                 const onlineCount = site.online_now > 0 ? `<strong class="stat-val-red">${site.online_now}</strong>` : '-';
                 const visitorsToday = site.visitors_today > 0 ? Number(site.visitors_today).toLocaleString() : '0';
                 const pageviewsToday = site.pageviews_today > 0 ? Number(site.pageviews_today).toLocaleString() : '0';
@@ -743,27 +741,22 @@
 
                 return `
                     <tr class="histats-row" id="site-row-${site.id}">
-                        <!-- Column 1: Website ID -->
-                        <td class="histats-cell-id">
-                            ${numericId}
-                        </td>
-
-                        <!-- Column 2: Url Website & Subline Stats -->
-                        <td class="histats-cell-content">
+                        <!-- Column 1: Url Website & Subline Stats -->
+                        <td class="histats-cell-content" style="padding:10px 16px;">
                             <a href="javascript:void(0)" onclick="openStats('${site.id}')" class="histats-site-title">
                                 ${escapeHTML(site.domain || site.name)}
                             </a>
                             <div class="histats-stats-subline">
                                 <span>Users online : ${onlineCount}</span>
-                                <span>Visitors today : <strong class="stat-val-green">${visitorsToday}</strong></span>
+                                <span>Pengunjung hari ini : <strong class="stat-val-green">${visitorsToday}</strong></span>
                                 <span>Page views today : <strong class="stat-val-green">${pageviewsToday}</strong></span>
                                 <span>Total visitors : <strong class="stat-val-bold">${totalVisitors}</strong></span>
                                 <span>Total page views : <strong class="stat-val-bold">${totalViews}</strong></span>
                             </div>
                         </td>
 
-                        <!-- Column 3: 5 Histats Action Icons -->
-                        <td class="histats-cell-actions">
+                        <!-- Column 2: 5 Histats Action Icons -->
+                        <td class="histats-cell-actions" style="padding-right:16px;">
                             <!-- 1. Open Site External -->
                             <a href="http://${site.domain}" target="_blank" class="action-icon-btn" title="Buka Website di Tab Baru">↗</a>
                             
