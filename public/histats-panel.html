@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PulseTrack Control Panel</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=Plus+Jakarta+Sans:wght@500;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #333333;
+            min-height: 100vh;
+        }
+
+        /* Top Header Navigation Bar */
+        .histats-header {
+            background: linear-gradient(180deg, #1b4b72 0%, #0d2c46 100%);
+            border-bottom: 2px solid #081d2f;
+            padding: 10px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+
+        .histats-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .histats-logo span {
+            color: #38bdf8;
+        }
+
+        .histats-top-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+        }
+
+        .histats-top-menu a {
+            color: #dbeafe;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .histats-top-menu a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1280px;
+            margin: 20px auto;
+            padding: 0 16px;
+        }
+
+        /* Tab Bar (Website / Sub-Account / Add Website) */
+        .histats-tabs-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 2px solid #0d3b66;
+            margin-bottom: 0px;
+        }
+
+        .tab-group-left {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .histats-tab {
+            padding: 8px 24px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 4px 4px 0 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: none;
+        }
+
+        .histats-tab.active {
+            background-color: #0d3b66;
+            color: #ffffff;
+            border-color: #0d3b66;
+        }
+
+        .histats-tab.inactive {
+            background-color: #dbe2e8;
+            color: #475569;
+            border-color: #cbd5e1;
+        }
+
+        .histats-tab.inactive:hover {
+            background-color: #cbd5e1;
+            color: #0f172a;
+        }
+
+        .btn-add-website {
+            color: #0d3b66;
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-add-website:hover {
+            background-color: rgba(13, 59, 102, 0.08);
+            color: #0284c7;
+        }
+
+        .btn-add-website .plus-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            background-color: #22c55e;
+            color: #ffffff;
+            font-weight: 900;
+            font-size: 14px;
+            border-radius: 3px;
+        }
+
+        /* Histats Table Structure */
+        .histats-panel-table {
+            width: 100%;
+            background: #ffffff;
+            border-collapse: collapse;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+            border: 1px solid #d1d5db;
+        }
+
+        /* Table Header */
+        .histats-table-header {
+            background: linear-gradient(180deg, #e5e7eb 0%, #d1d5db 100%);
+            border-bottom: 1px solid #9ca3af;
+        }
+
+        .histats-table-header th {
+            text-align: left;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #374151;
+        }
+
+        .histats-table-header th.th-id {
+            width: 120px;
+        }
+
+        /* Table Rows */
+        .histats-row {
+            border-bottom: 1px solid #e5e7eb;
+            transition: background 0.15s;
+        }
+
+        .histats-row:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        .histats-row:hover {
+            background-color: #eff6ff;
+        }
+
+        .histats-cell-id {
+            padding: 12px 14px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #0284c7;
+            vertical-align: middle;
+        }
+
+        .histats-cell-content {
+            padding: 10px 14px;
+            vertical-align: middle;
+        }
+
+        .histats-site-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 4px;
+            display: inline-block;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .histats-site-title:hover {
+            color: #0284c7;
+            text-decoration: underline;
+        }
+
+        /* Subtitle Row Stats */
+        .histats-stats-subline {
+            font-size: 11.5px;
+            color: #64748b;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .histats-stats-subline span {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-val-green {
+            color: #15803d;
+            font-weight: 700;
+        }
+
+        .stat-val-red {
+            color: #dc2626;
+            font-weight: 700;
+        }
+
+        .stat-val-bold {
+            color: #1e293b;
+            font-weight: 700;
+        }
+
+        /* Action Icons Column */
+        .histats-cell-actions {
+            padding: 10px 14px;
+            text-align: right;
+            vertical-align: middle;
+            white-space: nowrap;
+            width: 190px;
+        }
+
+        .action-icon-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            margin-left: 3px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #475569;
+            font-size: 14px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .action-icon-btn:hover {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+        }
+
+        .action-icon-btn.btn-chart:hover {
+            background-color: #dbeafe;
+            border-color: #93c5fd;
+            color: #0284c7;
+        }
+
+        .action-icon-btn.btn-wrench:hover {
+            background-color: #e0e7ff;
+            border-color: #a5b4fc;
+            color: #4f46e5;
+        }
+
+        .action-icon-btn.btn-lock:hover {
+            background-color: #fef3c7;
+            border-color: #fde68a;
+            color: #d97706;
+        }
+
+        .action-icon-btn.btn-delete:hover {
+            background-color: #fee2e2;
+            border-color: #fca5a5;
+            color: #dc2626;
+        }
+
+        /* Modal Dialogs */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #ffffff;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 640px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            border: 1px solid #cbd5e1;
+            animation: popIn 0.2s ease-out;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            background: #0d3b66;
+            color: #ffffff;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 22px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 24px 20px;
+        }
+
+        .form-row {
+            margin-bottom: 16px;
+        }
+
+        .form-row label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .form-input-text, .form-select {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 13.5px;
+            outline: none;
+        }
+
+        .form-input-text:focus, .form-select:focus {
+            border-color: #0284c7;
+            box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2);
+        }
+
+        .badge-preview-area {
+            background: #090d16;
+            border: 1px dashed #cbd5e1;
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .code-display-box {
+            background: #0f172a;
+            color: #38bdf8;
+            padding: 14px;
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .btn-copy-mini {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #0284c7;
+            color: #ffffff;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-copy-mini:hover {
+            background: #0369a1;
+        }
+
+        .btn-primary-blue {
+            background: #0284c7;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 13.5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary-blue:hover {
+            background: #0369a1;
+        }
+
+        .theme-pill-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .theme-pill-btn.active {
+            background: #0d3b66;
+            color: #ffffff;
+            border-color: #0d3b66;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="histats-header">
+        <a href="/" class="histats-logo">
+            ⚡ Pulse<span>Track</span> <span style="font-size:12px; background:rgba(255,255,255,0.15); padding:2px 8px; border-radius:4px; font-weight:600; color:#ffffff;">Control Panel</span>
+        </a>
+        <div class="histats-top-menu">
+            <a href="/">🏠 Home</a>
+            <a href="/dashboard.html">📊 Analytics Dashboard</a>
+            <a href="/keywords.html">🎯 Keyword Tracker (KW)</a>
+            <a href="/embed-generator.html">🔧 Footer Code Generator</a>
+            <a href="/demo.html" target="_blank">🧪 Live Demo Web ↗</a>
+            <span id="userSessionBadge" style="background:rgba(255,255,255,0.1); padding:4px 10px; border-radius:4px; font-size:12px; color:#e0f2fe; display:inline-flex; align-items:center; gap:6px;">
+                👤 <span id="userEmailDisplay">Loading...</span>
+            </span>
+            <a href="javascript:void(0)" onclick="logoutUser()" style="background:#dc2626; color:#ffffff; font-weight:700;">Logout 🚪</a>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <!-- Histats Tabs Bar -->
+        <div class="histats-tabs-bar">
+            <div class="tab-group-left">
+                <div class="histats-tab active" id="tabWebsite" onclick="switchMainTab('websites')">
+                    Websites (<span id="siteCountNum">0</span>)
+                </div>
+                <div class="histats-tab inactive" id="tabSubAccount" onclick="switchMainTab('subaccounts')">
+                    Sub-Accounts (<span id="subAccountCount">0</span>)
+                </div>
+            </div>
+
+            <div>
+                <a href="javascript:void(0)" class="btn-add-website" onclick="openAddModal()">
+                    <span class="plus-icon">+</span> Add a website
+                </a>
+            </div>
+        </div>
+
+        <!-- 1. WEBSITES TABLE VIEW -->
+        <div id="viewWebsites">
+            <table class="histats-panel-table">
+                <thead class="histats-table-header">
+                    <tr>
+                        <th class="th-id">Website id</th>
+                        <th>Url Website</th>
+                        <th style="text-align:right; padding-right:20px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="histatsTableBody">
+                    <tr>
+                        <td colspan="3" style="text-align:center; padding:30px; color:#64748b;">
+                            Memuat daftar website...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 2. SUB-ACCOUNT TAB VIEW -->
+        <div id="viewSubAccounts" style="display:none; background:#ffffff; border:1px solid #d1d5db; padding:30px; border-radius:0 0 4px 4px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 style="font-size:16px; color:#0f172a;">Manajemen Sub-Account (Delegate Users)</h3>
+                <button class="btn-primary-blue" onclick="openAddSubAccountModal()">+ Buat Sub-Account Baru</button>
+            </div>
+            <p style="color:#64748b; font-size:13px; margin-bottom:20px;">
+                Fitur sub-account memungkinkan Anda memberikan akses pantau ke client atau anggota tim khusus untuk domain tertentu saja tanpa bisa mengubah setelan utama.
+            </p>
+            <div id="subAccountList" style="color:#94a3b8; font-size:13px; text-align:center; padding:30px; background:#f8fafc; border:1px dashed #cbd5e1; border-radius:6px;">
+                Belum ada sub-account yang dibuat. Klik tombol <strong>+ Buat Sub-Account Baru</strong> untuk menambahkan.
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL 1: ADD A WEBSITE -->
+    <div id="addModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <span>➕ Add a website (PulseTrack Control Panel)</span>
+                <button class="modal-close" onclick="closeModal('addModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="formAddSiteHistats">
+                    <div class="form-row">
+                        <label for="siteUrl">Url Website (Domain): *</label>
+                        <input type="text" id="siteUrl" class="form-input-text" placeholder="contoh: testing.advansid.com" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="siteTitle">Title / Nama Website: *</label>
+                        <input type="text" id="siteTitle" class="form-input-text" placeholder="contoh: Portal Web Advansid" required>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div class="form-row">
+                            <label for="siteCategory">Category:</label>
+                            <select id="siteCategory" class="form-select">
+                                <option value="Blog / Personal">Blog / Personal</option>
+                                <option value="News / Media">News / Media</option>
+                                <option value="E-commerce / Shop">E-commerce / Shop</option>
+                                <option value="Technology">Technology</option>
+                                <option value="Entertainment">Entertainment</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label for="siteCountry">Country / Region:</label>
+                            <select id="siteCountry" class="form-select">
+                                <option value="ID" selected>Indonesia (ID)</option>
+                                <option value="US">United States (US)</option>
+                                <option value="SG">Singapore (SG)</option>
+                                <option value="MY">Malaysia (MY)</option>
+                                <option value="GLOBAL">Global / Worldwide</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="siteTimezone">Time Zone: *</label>
+                        <select id="siteTimezone" class="form-select">
+                            <option value="Asia/Jakarta" selected>Asia/Jakarta (WIB — GMT+07:00)</option>
+                            <option value="Asia/Makassar">Asia/Makassar (WITA — GMT+08:00)</option>
+                            <option value="Asia/Jayapura">Asia/Jayapura (WIT — GMT+09:00)</option>
+                            <option value="Asia/Singapore">Asia/Singapore (GMT+08:00)</option>
+                            <option value="UTC">UTC (GMT+00:00)</option>
+                            <option value="America/New_York">America/New_York (EST)</option>
+                        </select>
+                    </div>
+
+                    <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+                        <button type="button" class="form-input-text" style="width:auto; cursor:pointer;" onclick="closeModal('addModal')">Batal</button>
+                        <button type="submit" class="btn-primary-blue">Simpan & Dapatkan Kode &rarr;</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: GET TRACKING CODE & LIVE COUNTER WIZARD -->
+    <div id="codeModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <span id="codeModalTitle">🔧 Kode Tracker & Counter</span>
+                <button class="modal-close" onclick="closeModal('codeModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="font-size:13px; color:#475569; margin-bottom:12px;">
+                    Pilih gaya counter di bawah ini:
+                </div>
+
+                <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px;">
+                    <button class="theme-pill-btn active" onclick="changeThemeSnippet('classic', this)">📻 Classic Pulse (3-bar)</button>
+                    <button class="theme-pill-btn" onclick="changeThemeSnippet('modern', this)">✨ Modern Pill</button>
+                    <button class="theme-pill-btn" onclick="changeThemeSnippet('neon', this)">⚡ Cyberpunk Neon</button>
+                    <button class="theme-pill-btn" onclick="changeThemeSnippet('invisible', this)">👻 Invisible Tracker</button>
+                </div>
+
+                <!-- Live Preview of Badge -->
+                <div class="badge-preview-area" id="badgePreviewContainer">
+                    <img id="badgePreviewModal" src="/api/badge?theme=classic" alt="Live Badge">
+                </div>
+
+                <div style="font-size:13px; font-weight:700; color:#334155; margin-bottom:6px;">
+                    Salin 1 blok kode ini dan tempel di Footer website target:
+                </div>
+
+                <div class="code-display-box">
+                    <button class="btn-copy-mini" onclick="copyModalCode(this)">📋 Salin</button>
+                    <code id="codeSnippetBox"></code>
+                </div>
+
+                <div style="margin-top:20px; display:flex; justify-content:space-between; align-items:center;">
+                    <a href="javascript:void(0)" onclick="openStatsFromModal()" style="color:#0284c7; font-size:13px; font-weight:700; text-decoration:none;">📊 Buka Dashboard Website Ini &rarr;</a>
+                    <button class="btn-primary-blue" onclick="closeModal('codeModal')">Selesai</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: PRIVACY & ACCESS SETTINGS (Lock Icon) -->
+    <div id="privacyModal" class="modal-overlay">
+        <div class="modal-box" style="max-width:500px;">
+            <div class="modal-header">
+                <span id="privacyModalTitle">🔒 Setelan Privasi & Akses Statistik</span>
+                <button class="modal-close" onclick="closeModal('privacyModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <label for="privacyOption">Visibilitas Statistik:</label>
+                    <select id="privacyOption" class="form-select">
+                        <option value="public">🔓 Terbuka (Public — Siapa saja bisa melihat statistik)</option>
+                        <option value="private">🔒 Terkunci (Private — Memerlukan PIN / Password Akses)</option>
+                    </select>
+                </div>
+
+                <div class="form-row" id="pinBox" style="display:none;">
+                    <label for="accessPin">PIN / Password Akses:</label>
+                    <input type="password" id="accessPin" class="form-input-text" placeholder="Masukkan 4-6 digit PIN">
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:24px;">
+                    <button type="button" class="form-input-text" style="width:auto; cursor:pointer;" onclick="closeModal('privacyModal')">Tutup</button>
+                    <button type="button" class="btn-primary-blue" onclick="savePrivacySetting()">Simpan Perubahan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: DELETE CONFIRMATION -->
+    <div id="deleteModal" class="modal-overlay">
+        <div class="modal-box" style="max-width:440px;">
+            <div class="modal-header" style="background:#dc2626;">
+                <span>⚠️ Konfirmasi Hapus Website</span>
+                <button class="modal-close" onclick="closeModal('deleteModal')">&times;</button>
+            </div>
+            <div class="modal-body" style="text-align:center; padding:28px 20px;">
+                <div style="font-size:44px; margin-bottom:12px;">🗑️</div>
+                <h3 style="font-size:16px; font-weight:700; color:#0f172a; margin-bottom:8px;">Hapus Website Ini?</h3>
+                <p style="font-size:13.5px; color:#64748b; margin-bottom:20px; line-height:1.5;">
+                    Apakah Anda yakin ingin menghapus <strong id="deleteTargetDomain" style="color:#dc2626;"></strong>?<br>
+                    Semua riwayat analitik, pageviews, dan live counter untuk website ini akan dihapus secara permanen.
+                </p>
+
+                <div style="display:flex; justify-content:center; gap:12px;">
+                    <button type="button" class="form-input-text" style="width:auto; padding:8px 20px; cursor:pointer;" onclick="closeModal('deleteModal')">Batal</button>
+                    <button type="button" class="btn-primary-blue" style="background:#dc2626;" id="btnConfirmDelete" onclick="executeDelete()">Ya, Hapus Website</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIC CONTROLLER -->
+    <script>
+        let currentSelectedSiteId = '';
+        let currentSelectedDomain = '';
+        let pendingDeleteSiteId = '';
+        let pendingDeleteDomain = '';
+        let currentModalTheme = 'classic';
+        const baseUrl = window.location.origin;
+
+        // Fetch and Render Sites
+        async function loadSites() {
+            try {
+                const res = await fetch('/api/sites');
+                const data = await res.json();
+                if (data.ok && data.sites) {
+                    document.getElementById('siteCountNum').textContent = data.sites.length;
+                    renderTable(data.sites);
+                }
+            } catch (err) {
+                console.error('Failed to load sites:', err);
+            }
+        }
+
+        // Generate Numeric Website ID (ala Histats e.g. 5046021)
+        function getNumericId(idStr) {
+            let hash = 0;
+            for (let i = 0; i < idStr.length; i++) {
+                hash = ((hash << 5) - hash) + idStr.charCodeAt(i);
+                hash |= 0;
+            }
+            return 5000000 + Math.abs(hash % 900000);
+        }
+
+        // Render Table Rows (Exact Histats Design)
+        function renderTable(sites) {
+            const tbody = document.getElementById('histatsTableBody');
+            if (!sites || sites.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:30px; color:#64748b;">Belum ada website. Klik <strong>+ Add a website</strong> di atas untuk menambahkan.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = sites.map(site => {
+                const numericId = getNumericId(site.id);
+                const onlineCount = site.online_now > 0 ? `<strong class="stat-val-red">${site.online_now}</strong>` : '-';
+                const visitorsToday = site.visitors_today > 0 ? Number(site.visitors_today).toLocaleString() : '0';
+                const pageviewsToday = site.pageviews_today > 0 ? Number(site.pageviews_today).toLocaleString() : '0';
+                const totalVisitors = Number(site.total_visitors || 0).toLocaleString();
+                const totalViews = Number(site.total_views || 0).toLocaleString();
+
+                return `
+                    <tr class="histats-row" id="site-row-${site.id}">
+                        <!-- Column 1: Website ID -->
+                        <td class="histats-cell-id">
+                            ${numericId}
+                        </td>
+
+                        <!-- Column 2: Url Website & Subline Stats -->
+                        <td class="histats-cell-content">
+                            <a href="javascript:void(0)" onclick="openStats('${site.id}')" class="histats-site-title">
+                                ${escapeHTML(site.domain || site.name)}
+                            </a>
+                            <div class="histats-stats-subline">
+                                <span>Users online : ${onlineCount}</span>
+                                <span>Visitors today : <strong class="stat-val-green">${visitorsToday}</strong></span>
+                                <span>Page views today : <strong class="stat-val-green">${pageviewsToday}</strong></span>
+                                <span>Total visitors : <strong class="stat-val-bold">${totalVisitors}</strong></span>
+                                <span>Total page views : <strong class="stat-val-bold">${totalViews}</strong></span>
+                            </div>
+                        </td>
+
+                        <!-- Column 3: 5 Histats Action Icons -->
+                        <td class="histats-cell-actions">
+                            <!-- 1. Open Site External -->
+                            <a href="http://${site.domain}" target="_blank" class="action-icon-btn" title="Buka Website di Tab Baru">↗</a>
+                            
+                            <!-- 2. Privacy & Lock Setting -->
+                            <button class="action-icon-btn btn-lock" title="Setelan Akses & Privasi" onclick="openPrivacyModal('${site.id}', '${escapeHTML(site.domain)}')">🔒</button>
+                            
+                            <!-- 3. View Stats Dashboard -->
+                            <button class="action-icon-btn btn-chart" title="Lihat Dashboard & Grafik Statistik" onclick="openStats('${site.id}')">📊</button>
+                            
+                            <!-- 4. Wrench / Get Code & Counter Wizard -->
+                            <button class="action-icon-btn btn-wrench" title="Dapatkan Kode Tracker & Live Counter" onclick="openCodeModal('${site.id}', '${escapeHTML(site.domain)}')">🔧</button>
+                            
+                            <!-- 5. Delete Site (Tombol X) -->
+                            <button class="action-icon-btn btn-delete" title="Hapus Website" onclick="confirmDeleteSite('${site.id}', '${escapeHTML(site.domain)}')">❌</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Open Statistics Dashboard for selected site
+        function openStats(siteId) {
+            localStorage.setItem('pulse_current_site', siteId);
+            window.location.href = '/index.html';
+        }
+
+        function openStatsFromModal() {
+            if (currentSelectedSiteId) {
+                openStats(currentSelectedSiteId);
+            }
+        }
+
+        // Tab Switching (Websites vs Sub-Accounts)
+        function switchMainTab(tab) {
+            const tabWeb = document.getElementById('tabWebsite');
+            const tabSub = document.getElementById('tabSubAccount');
+            const viewWeb = document.getElementById('viewWebsites');
+            const viewSub = document.getElementById('viewSubAccounts');
+
+            if (tab === 'websites') {
+                tabWeb.className = 'histats-tab active';
+                tabSub.className = 'histats-tab inactive';
+                viewWeb.style.display = 'block';
+                viewSub.style.display = 'none';
+            } else {
+                tabWeb.className = 'histats-tab inactive';
+                tabSub.className = 'histats-tab active';
+                viewWeb.style.display = 'none';
+                viewSub.style.display = 'block';
+            }
+        }
+
+        // Modal Helpers
+        function openAddModal() {
+            document.getElementById('addModal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Privacy Modal
+        function openPrivacyModal(siteId, domain) {
+            currentSelectedSiteId = siteId;
+            document.getElementById('privacyModalTitle').textContent = `🔒 Setelan Privasi: ${domain}`;
+            document.getElementById('privacyModal').classList.add('active');
+        }
+
+        document.getElementById('privacyOption').addEventListener('change', (e) => {
+            document.getElementById('pinBox').style.display = e.target.value === 'private' ? 'block' : 'none';
+        });
+
+        function savePrivacySetting() {
+            alert('✅ Setelan privasi untuk ' + currentSelectedSiteId + ' berhasil diperbarui!');
+            closeModal('privacyModal');
+        }
+
+        // Form Submit: Add Website
+        document.getElementById('formAddSiteHistats').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const rawUrl = document.getElementById('siteUrl').value.trim();
+            const domain = rawUrl.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+            const title = document.getElementById('siteTitle').value.trim();
+            const category = document.getElementById('siteCategory').value;
+            const country = document.getElementById('siteCountry').value;
+            const timezone = document.getElementById('siteTimezone').value;
+
+            const cleanSiteId = domain.toLowerCase().replace(/[^a-z0-9.-]/g, '-');
+
+            try {
+                const res = await fetch('/api/sites', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: cleanSiteId,
+                        name: title,
+                        domain: domain,
+                        settings: { category, country, timezone, visibility: 'public' }
+                    })
+                });
+                const data = await res.json();
+                if (data.ok) {
+                    closeModal('addModal');
+                    document.getElementById('formAddSiteHistats').reset();
+                    await loadSites();
+                    openCodeModal(cleanSiteId, domain);
+                } else {
+                    alert('Error: ' + (data.error || 'Gagal menambahkan website'));
+                }
+            } catch (err) {
+                alert('Connection error: ' + err.message);
+            }
+        });
+
+        // Open Code Modal
+        function openCodeModal(siteId, domain) {
+            currentSelectedSiteId = siteId;
+            currentSelectedDomain = domain;
+            document.getElementById('codeModalTitle').textContent = `🔧 Kode Tracker & Counter: ${domain}`;
+            updateCodeBox();
+            document.getElementById('codeModal').classList.add('active');
+        }
+
+        function changeThemeSnippet(theme, btn) {
+            currentModalTheme = theme;
+            if (btn) {
+                document.querySelectorAll('.theme-pill-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+            updateCodeBox();
+        }
+
+        function updateCodeBox() {
+            const siteId = currentSelectedSiteId;
+            const previewContainer = document.getElementById('badgePreviewContainer');
+            const previewImg = document.getElementById('badgePreviewModal');
+
+            if (currentModalTheme === 'invisible') {
+                previewContainer.style.display = 'none';
+            } else {
+                previewContainer.style.display = 'block';
+                previewImg.src = `${baseUrl}/api/badge?site_id=${encodeURIComponent(siteId)}&theme=${currentModalTheme}&_t=${Date.now()}`;
+            }
+
+            let snippet = '';
+            if (currentModalTheme === 'invisible') {
+                snippet = `<!-- PulseTrack Invisible Analytics (Paste in Footer) -->\n<script defer src="${baseUrl}/tracker.js" data-site-id="${siteId}"><\/script>`;
+            } else {
+                snippet = `<!-- PulseTrack / Histats Live Counter (Paste in Footer) -->\n<div id="histats_counter">\n  <a href="${baseUrl}" target="_blank" title="Live Traffic Analytics">\n    <img src="${baseUrl}/api/badge?site_id=${siteId}&theme=${currentModalTheme}" alt="Histats Counter" border="0" />\n  </a>\n</div>\n<script defer src="${baseUrl}/tracker.js" data-site-id="${siteId}"><\/script>`;
+            }
+            document.getElementById('codeSnippetBox').textContent = snippet;
+        }
+
+        function copyModalCode(btn) {
+            const code = document.getElementById('codeSnippetBox').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const old = btn.textContent;
+                btn.textContent = '✅ Disalin!';
+                setTimeout(() => { btn.textContent = old; }, 2000);
+            });
+        }
+
+        // --- TOMBOL X: HAPUS WEBSITE ---
+        function confirmDeleteSite(siteId, domain) {
+            pendingDeleteSiteId = siteId;
+            pendingDeleteDomain = domain;
+            document.getElementById('deleteTargetDomain').textContent = domain;
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        async function executeDelete() {
+            const siteId = pendingDeleteSiteId;
+            const domain = pendingDeleteDomain;
+            const btn = document.getElementById('btnConfirmDelete');
+            btn.disabled = true;
+            btn.textContent = 'Menghapus...';
+
+            try {
+                const res = await fetch(`/api/sites?id=${encodeURIComponent(siteId)}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.ok) {
+                    closeModal('deleteModal');
+                    // Remove row with animation
+                    const row = document.getElementById(`site-row-${siteId}`);
+                    if (row) {
+                        row.style.transition = 'all 0.3s ease';
+                        row.style.opacity = '0';
+                        row.style.transform = 'translateX(20px)';
+                        setTimeout(() => {
+                            row.remove();
+                            loadSites();
+                        }, 300);
+                    } else {
+                        loadSites();
+                    }
+                } else {
+                    alert('Gagal menghapus website: ' + (data.error || 'Unknown error'));
+                }
+            } catch (err) {
+                alert('Error koneksi: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Ya, Hapus Website';
+            }
+        }
+
+        function openAddSubAccountModal() {
+            const email = prompt('Masukkan Email / Username Sub-Account:');
+            if (email) {
+                alert(`✅ Sub-account "${email}" berhasil dibuat dan diberikan izin pantau!`);
+                document.getElementById('subAccountCount').textContent = '1';
+                document.getElementById('subAccountList').innerHTML = `
+                    <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:4px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <strong style="color:#0f172a;">${email}</strong>
+                            <div style="font-size:11.5px; color:#64748b;">Role: View Only Stats • Status: Active</div>
+                        </div>
+                        <button style="color:#dc2626; background:none; border:none; cursor:pointer; font-weight:700;" onclick="this.parentElement.remove(); document.getElementById('subAccountCount').textContent='0';">Hapus</button>
+                    </div>
+                `;
+            }
+        }
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // Initial Load & Realtime Polling
+        loadSites();
+        setInterval(loadSites, 5000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PulseTrack — Detailed Analytics Dashboard</title>
+    <!-- Modern Font: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+    <div class="bg-mesh"></div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">⚡</div>
+            <div class="brand-info">
+                <h2>PulseTrack</h2>
+                <span>● Cloudflare Ready</span>
+            </div>
+        </div>
+
+        <span class="nav-group-title">Main Menu</span>
+        <ul class="nav-links">
+            <li>
+                <a href="/index.html" class="nav-link">
+                    <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    <span>Websites List</span>
+                </a>
+            </li>
+            <li>
+                <a href="/dashboard.html" class="nav-link active">
+                    <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                    <span>Analytics Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="/keywords.html" class="nav-link">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <span>Keyword Tracker (KW)</span>
+                </a>
+            </li>
+            <li>
+                <a href="/embed-generator.html" class="nav-link">
+                    <svg viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6M14 4l-4 16"/></svg>
+                    <span>Get Footer Code</span>
+                </a>
+            </li>
+            <li>
+                <a href="/demo.html" target="_blank" class="nav-link">
+                    <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                    <span>Live Demo Web ↗</span>
+                </a>
+            </li>
+        </ul>
+
+        <!-- Site Switcher in Sidebar -->
+        <div class="site-selector-box">
+            <label for="siteSelect">Select Website</label>
+            <select id="siteSelect" class="custom-select">
+                <option value="demo-site-1">My Awesome Website</option>
+            </select>
+        </div>
+    </aside>
+
+    <!-- Main Dashboard Content -->
+    <main class="main-content">
+        <!-- Top Bar Header -->
+        <header class="top-bar">
+            <div class="header-title">
+                <h1>
+                    Analytics Overview
+                    <span class="live-indicator-pill">
+                        <span class="pulse-dot"></span>
+                        <span id="liveOnlineBadge">0 Online Now</span>
+                    </span>
+                </h1>
+            </div>
+
+            <div class="header-controls">
+                <a href="/index.html" class="date-pill" style="display:inline-flex; align-items:center; gap:6px; color:#ffffff; background:#1e293b; text-decoration:none; padding:8px 14px; font-weight:700;">
+                    📋 Websites List
+                </a>
+
+                <div class="date-pill-group">
+                    <button class="date-pill" data-period="today">Today</button>
+                    <button class="date-pill" data-period="yesterday">Yesterday</button>
+                    <button class="date-pill active" data-period="7d">Last 7 Days</button>
+                    <button class="date-pill" data-period="30d">Last 30 Days</button>
+                </div>
+
+                <a href="/add-website.html" class="btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                    <span>+ Add Website</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- KPI Metrics Row -->
+        <section class="metrics-grid">
+            <!-- Metric: Live Online -->
+            <div class="metric-card card-live">
+                <div class="metric-header">
+                    <span class="metric-title">Online Now</span>
+                    <div class="metric-icon" style="background:rgba(16,185,129,0.15); color:var(--success);">🟢</div>
+                </div>
+                <div class="metric-value" id="metricLiveOnline">0</div>
+                <div class="metric-subtitle">
+                    <span class="positive">● Active Now</span> (Realtime ping)
+                </div>
+            </div>
+
+            <!-- Metric: Total Pageviews -->
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-title">Total Pageviews</span>
+                    <div class="metric-icon" style="color:var(--primary);">👁️</div>
+                </div>
+                <div class="metric-value" id="metricTotalViews">0</div>
+                <div class="metric-subtitle">Total pageviews recorded</div>
+            </div>
+
+            <!-- Metric: Unique Visitors -->
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-title">Unique Visitors</span>
+                    <div class="metric-icon" style="color:var(--secondary);">👤</div>
+                </div>
+                <div class="metric-value" id="metricUniqueVisitors">0</div>
+                <div class="metric-subtitle">Unique browser & IP</div>
+            </div>
+
+            <!-- Metric: Avg Duration -->
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-title">Avg Visit Duration</span>
+                    <div class="metric-icon" style="color:var(--accent);">⏱️</div>
+                </div>
+                <div class="metric-value" id="metricAvgDuration">0s</div>
+                <div class="metric-subtitle">Time spent on site</div>
+            </div>
+
+            <!-- Metric: Bounce Rate -->
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-title">Bounce Rate</span>
+                    <div class="metric-icon" style="color:var(--warning);">⚡</div>
+                </div>
+                <div class="metric-value" id="metricBounceRate">0%</div>
+                <div class="metric-subtitle">Visits under 5 seconds</div>
+            </div>
+        </section>
+
+        <!-- KW TRACKER SECTION: KEYWORDS & SEO SEARCH QUERIES -->
+        <section class="analytics-section" style="border: 1px solid rgba(99, 102, 241, 0.3); background: rgba(15, 23, 42, 0.85);">
+            <div class="section-header">
+                <h3>
+                    <span style="font-size:20px;">🎯</span>
+                    Keyword Tracker (Search Engine Queries & SEO Keywords)
+                </h3>
+                <span class="tag-pill" style="background:var(--primary); color:#ffffff; font-weight:700;">Organic Traffic</span>
+            </div>
+
+            <p style="color:var(--text-muted); font-size:13px; margin-bottom:18px;">
+                Track search queries and keywords bringing traffic from Google, Bing, Yahoo, Yandex, and internal searches. Use the period filter (Today, 7 Days, 30 Days) above to track rising keywords.
+            </p>
+
+            <!-- Trending Keywords Banner (KW yang Naik) -->
+            <div style="margin-bottom:20px;">
+                <div style="font-size:12px; color:var(--text-dim); font-weight:800; text-transform:uppercase; margin-bottom:10px;">
+                    🚀 Trending / Rising Keywords in this period:
+                </div>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px;" id="trendingKeywordsBox">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <div class="split-grid" style="grid-template-columns: 2fr 1fr;">
+                <!-- Main Keywords Table -->
+                <div class="data-table-card" style="background:rgba(255,255,255,0.02);">
+                    <div class="data-table-header">
+                        <h4>📋 Top Search Keywords</h4>
+                        <span class="tag-pill">Sorted by Hits</span>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%; border-collapse:collapse; font-size:13px;">
+                            <thead>
+                                <tr style="border-bottom:1px solid var(--border-color); color:var(--text-dim); font-size:11px; text-transform:uppercase;">
+                                    <th style="text-align:left; padding:8px 12px; width:40px;">Rank</th>
+                                    <th style="text-align:left; padding:8px 12px;">Keyword / Query</th>
+                                    <th style="text-align:left; padding:8px 12px;">Search Engine</th>
+                                    <th style="text-align:right; padding:8px 12px; width:120px;">Total Hits</th>
+                                    <th style="text-align:right; padding:8px 12px; width:80px;">Visitors</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topKeywordsList">
+                                <tr><td colspan="5" style="text-align:center; padding:20px; color:var(--text-dim);">Loading keywords...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Search Engine Source Share -->
+                <div class="data-table-card" style="background:rgba(255,255,255,0.02);">
+                    <div class="data-table-header">
+                        <h4>🔍 Search Engine Sources</h4>
+                        <span class="tag-pill">Search Engines</span>
+                    </div>
+                    <div id="searchEnginesBox" style="padding:10px 0;">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Traffic Trend Chart -->
+        <section class="analytics-section">
+            <div class="section-header">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M18 9l-5 5-4-4-6 6"/></svg>
+                    Visitors & Pageviews Trends
+                </h3>
+            </div>
+            <div class="chart-container">
+                <canvas id="trafficChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Split Grid 1: Top Pages & Top Referrers -->
+        <section class="split-grid">
+            <!-- Top Pages Card -->
+            <div class="data-table-card">
+                <div class="data-table-header">
+                    <h4>📄 Top Visited Pages</h4>
+                    <span class="tag-pill">Top URLs</span>
+                </div>
+                <ul class="data-list" id="topPagesList">
+                    <li style="color:var(--text-dim); text-align:center; padding:20px;">Loading data...</li>
+                </ul>
+            </div>
+
+            <!-- Top Referrers Card -->
+            <div class="data-table-card">
+                <div class="data-table-header">
+                    <h4>🌐 Traffic Sources (Referrers)</h4>
+                    <span class="tag-pill">Traffic Channels</span>
+                </div>
+                <ul class="data-list" id="topReferrersList">
+                    <li style="color:var(--text-dim); text-align:center; padding:20px;">Loading data...</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Split Grid 2: Geolocation & Devices/Technology -->
+        <section class="split-grid">
+            <!-- Countries Card -->
+            <div class="data-table-card">
+                <div class="data-table-header">
+                    <h4>🌍 Visitor Countries</h4>
+                    <span class="tag-pill">Geolocation</span>
+                </div>
+                <ul class="data-list" id="topCountriesList">
+                    <li style="color:var(--text-dim); text-align:center; padding:20px;">Loading data...</li>
+                </ul>
+            </div>
+
+            <!-- Devices & Technology Card -->
+            <div class="data-table-card">
+                <div class="data-table-header">
+                    <h4>📱 Devices & Browsers</h4>
+                    <span class="tag-pill">Tech Stack</span>
+                </div>
+                <div style="margin-bottom:18px;">
+                    <div style="font-size:12px; color:var(--text-dim); font-weight:700; text-transform:uppercase; margin-bottom:8px;">Device Types</div>
+                    <div id="devicesList">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+                <div>
+                    <div style="font-size:12px; color:var(--text-dim); font-weight:700; text-transform:uppercase; margin-bottom:8px;">Browsers</div>
+                    <div id="browsersList" style="display:flex; flex-wrap:wrap;">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Realtime Visitors Log Feed -->
+        <section class="analytics-section">
+            <div class="section-header">
+                <h3>
+                    <span class="pulse-dot" style="margin-right:4px;"></span>
+                    Live Visitor Activity Feed
+                </h3>
+                <span class="tag-pill">Realtime Ingestion</span>
+            </div>
+            <div class="live-feed-list" id="liveFeedList">
+                <div style="color:var(--text-dim); text-align:center; padding:20px;">Loading live stream...</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal: Tambah Website Baru -->
+    <div id="addSiteModal" class="modal-overlay">
+        <div class="modal-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 style="font-size:18px; font-weight:700;">Tambah Website Baru</h3>
+                <button id="btnCloseAddSite" style="background:none; border:none; color:var(--text-muted); font-size:20px; cursor:pointer;">&times;</button>
+            </div>
+            <form id="formAddSite">
+                <div class="form-group">
+                    <label for="newSiteName">Nama Website</label>
+                    <input type="text" id="newSiteName" class="form-input" placeholder="Contoh: Blog Pribadi Saya" required>
+                </div>
+                <div class="form-group">
+                    <label for="newSiteDomain">Domain / Hostname</label>
+                    <input type="text" id="newSiteDomain" class="form-input" placeholder="Contoh: myblog.com" required>
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:24px;">
+                    <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">Simpan & Buat Kode Tracking</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard App Logic -->
+    <script src="/js/app.js"></script>
+</body>
+</html>

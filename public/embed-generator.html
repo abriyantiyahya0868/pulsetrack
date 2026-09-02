@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Kode Footer — PulseTrack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <style>
+        .generator-hero {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(56, 189, 248, 0.08));
+            border: 1px solid var(--border-glow);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            margin-bottom: 24px;
+        }
+        .input-domain-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .input-domain-box {
+            flex: 1;
+            min-width: 260px;
+            background: #090d16;
+            border: 2px solid var(--primary);
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 12px 18px;
+            border-radius: var(--radius-sm);
+            outline: none;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+        .badge-preview-box {
+            background: #090d16;
+            border: 1px dashed var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            gap: 10px;
+        }
+        .style-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .style-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 14px;
+            cursor: pointer;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .style-card:hover, .style-card.active {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .style-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+        .style-desc {
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+        .step-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: var(--primary);
+            color: #ffffff;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 800;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-mesh"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">⚡</div>
+            <div class="brand-info">
+                <h2>PulseTrack</h2>
+                <span>● Realtime Analytics</span>
+            </div>
+        </div>
+
+        <span class="nav-group-title">Main Menu</span>
+        <ul class="nav-links">
+            <li>
+                <a href="/index.html" class="nav-link">
+                    <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                    <span>Websites List</span>
+                </a>
+            </li>
+            <li>
+                <a href="/dashboard.html" class="nav-link">
+                    <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                    <span>Analytics Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="/keywords.html" class="nav-link">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <span>Keywords & Top URLs</span>
+                </a>
+            </li>
+            <li>
+                <a href="/embed-generator.html" class="nav-link active">
+                    <svg viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6M14 4l-4 16"/></svg>
+                    <span>Get Footer Code</span>
+                </a>
+            </li>
+            <li>
+                <a href="/demo.html" target="_blank" class="nav-link">
+                    <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                    <span>Live Demo Web ↗</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="top-bar">
+            <div class="header-title">
+                <h1>⚡ Get Tracking & Footer Code (PulseTrack)</h1>
+            </div>
+        </header>
+
+        <!-- Step 1: Input Domain -->
+        <section class="generator-hero">
+            <h3><span class="step-badge">1</span> Masukkan Nama Domain Website Anda:</h3>
+            <p style="color:var(--text-muted); font-size:13.5px; margin-top:6px;">
+                Cukup ketik nama domain Anda (misal: <code>domainku.com</code>). PulseTrack akan langsung menghasilkan 1 blok kode footer yang siap dipasang!
+            </p>
+            <div class="input-domain-row">
+                <input type="text" id="domainInput" class="input-domain-box" placeholder="Contoh: mywebsite.com" value="mywebsite.com">
+            </div>
+        </section>
+
+        <!-- Step 2: Pilih Tampilan Counter -->
+        <section class="analytics-section">
+            <h3><span class="step-badge">2</span> Pilih Gaya Live Counter di Footer:</h3>
+            
+            <div class="style-grid">
+                <div class="style-card active" data-style="classic">
+                    <div class="style-title">📻 Classic Pulse</div>
+                    <div class="style-desc">Kotak 3-baris (Online, Today, Total)</div>
+                </div>
+                <div class="style-card" data-style="modern">
+                    <div class="style-title">✨ Modern Pill</div>
+                    <div class="style-desc">Kapsul gradient + titik hijau online</div>
+                </div>
+                <div class="style-card" data-style="neon">
+                    <div class="style-title">⚡ Cyberpunk Neon</div>
+                    <div class="style-desc">Tampilan gelap glow futuristik</div>
+                </div>
+                <div class="style-card" data-style="invisible">
+                    <div class="style-title">👻 Invisible (Tersembunyi)</div>
+                    <div class="style-desc">Hanya melacak tanpa menampilkan angka</div>
+                </div>
+            </div>
+
+            <!-- Preview Counter -->
+            <div class="badge-preview-box" id="previewBox">
+                <span style="font-size:11px; color:var(--text-dim); text-transform:uppercase; font-weight:700;">Live Preview Counter:</span>
+                <img id="badgePreview" src="/api/badge?site_id=demo-site-1&theme=classic" alt="Live Counter Preview">
+            </div>
+        </section>
+
+        <!-- Step 3: Kode Siap Pasang di Footer -->
+        <section class="analytics-section">
+            <div class="section-header">
+                <h3><span class="step-badge">3</span> Salin Kode & Pasang di Footer Website:</h3>
+            </div>
+            <p style="color:var(--text-muted); font-size:13.5px; margin-bottom:14px;">
+                Copy kode di bawah ini, lalu paste di template <strong>Footer</strong> (sebelum penutup <code>&lt;/body&gt;</code>) di WordPress, Blogger, PHP, atau HTML Anda. Selesai!
+            </p>
+
+            <div class="code-block" style="position:relative;">
+                <button class="btn-copy" onclick="copySnippet(this)">📋 Salin Kode Footer</button>
+                <code id="footerCodeBlock"></code>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const domainInput = document.getElementById('domainInput');
+        const styleCards = document.querySelectorAll('.style-card');
+        const badgePreview = document.getElementById('badgePreview');
+        const previewBox = document.getElementById('previewBox');
+        const footerCodeBlock = document.getElementById('footerCodeBlock');
+
+        let currentDomain = 'mywebsite.com';
+        let currentStyle = 'classic';
+        const baseUrl = window.location.origin;
+
+        function updateCode() {
+            let domain = domainInput.value.trim().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+            if (!domain) domain = 'mywebsite.com';
+            currentDomain = domain;
+
+            // Update Preview
+            if (currentStyle === 'invisible') {
+                previewBox.style.display = 'none';
+            } else {
+                previewBox.style.display = 'flex';
+                badgePreview.src = `${baseUrl}/api/badge?site_id=${encodeURIComponent(currentDomain)}&theme=${encodeURIComponent(currentStyle)}&_t=${Date.now()}`;
+            }
+
+            // Generate Footer Snippet
+            let snippet = '';
+            if (currentStyle === 'invisible') {
+                snippet = `<!-- PulseTrack Invisible Analytics (Paste in Footer / Head) -->\n<script defer src="${baseUrl}/tracker.js" data-site-id="${currentDomain}"><\/script>`;
+            } else {
+                snippet = `<!-- PulseTrack Live Counter & Tracker (Paste in Footer) -->\n<div id="histats_counter">\n  <a href="${baseUrl}" target="_blank" title="Live Traffic Analytics">\n    <img src="${baseUrl}/api/badge?site_id=${currentDomain}&theme=${currentStyle}" alt="Histats Counter" border="0" />\n  </a>\n</div>\n<script defer src="${baseUrl}/tracker.js" data-site-id="${currentDomain}"><\/script>`;
+            }
+
+            footerCodeBlock.textContent = snippet;
+        }
+
+        domainInput.addEventListener('input', updateCode);
+
+        styleCards.forEach(card => {
+            card.addEventListener('click', () => {
+                styleCards.forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                currentStyle = card.getAttribute('data-style');
+                updateCode();
+            });
+        });
+
+        function copySnippet(btn) {
+            const text = footerCodeBlock.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const old = btn.textContent;
+                btn.textContent = '✅ Berhasil Disalin!';
+                setTimeout(() => { btn.textContent = old; }, 2000);
+            });
+        }
+
+        updateCode();
+    </script>
+</body>
+</html>

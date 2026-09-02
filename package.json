@@ -1,0 +1,29 @@
+{
+  "name": "pulse-track",
+  "version": "1.0.0",
+  "description": "Ultra-fast, privacy-friendly self-hosted web analytics & live counter like Histats, ready for Cloudflare Pages & D1",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "init-db": "node init-db.js"
+  },
+  "keywords": [
+    "analytics",
+    "histats",
+    "web-tracker",
+    "cloudflare-pages",
+    "cloudflare-d1",
+    "privacy-friendly"
+  ],
+  "author": "PulseTrack",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "wrangler": "^3.50.0"
+  }
+}

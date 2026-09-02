@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Website Pengujian — PulseTrack</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .demo-card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 12px;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        p {
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        .btn-action {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            margin: 6px;
+            transition: all 0.2s;
+        }
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+        .badge-box {
+            margin-top: 30px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+
+    <!-- 1. SCRIPT TRACKER PULSETRACK -->
+    <script defer src="/tracker.js" data-site-id="demo-site-1"></script>
+</head>
+<body>
+    <div class="demo-card">
+        <div style="font-size: 40px; margin-bottom: 10px;">🧪</div>
+        <h1>Website Demo Pengujian Tracking</h1>
+        <p>
+            Halaman ini telah dipasangi script <code>tracker.js</code>. Setiap kali Anda membuka atau merefresh halaman ini, PulseTrack akan secara realtime mencatat kunjungan, perangkat, resolusi layar, dan durasi Anda!
+        </p>
+
+        <div>
+            <button class="btn-action" onclick="testCustomEvent('click_whatsapp')">📲 Test Event WhatsApp</button>
+            <button class="btn-action" style="background:#10b981;" onclick="testCustomEvent('click_download')">📥 Test Event Download</button>
+            <button class="btn-action" style="background:#f59e0b;" onclick="window.location.href='/dashboard.html'">📊 Open Dashboard</button>
+        </div>
+
+        <div id="eventStatus" style="margin-top: 15px; font-size: 13px; color: #38bdf8; min-height: 20px;"></div>
+
+        <!-- 2. WIDGET LIVE COUNTER BADGE -->
+        <div class="badge-box">
+            <div style="font-size: 12px; color: #94a3b8; margin-bottom: 12px; font-weight: 600;">LIVE COUNTER STATS (PULSETRACK):</div>
+            <div class="pulsetrack-badge" data-site-id="demo-site-1" data-theme="modern"></div>
+            <div style="margin-top: 10px;" class="pulsetrack-badge" data-site-id="demo-site-1" data-theme="classic"></div>
+        </div>
+    </div>
+
+    <script>
+        function testCustomEvent(name) {
+            if (window.pulseTrack) {
+                window.pulseTrack.event(name, { timestamp: Date.now(), source: 'demo_button' });
+                document.getElementById('eventStatus').textContent = `✅ Event "${name}" berhasil dikirim ke backend!`;
+                setTimeout(() => {
+                    document.getElementById('eventStatus').textContent = '';
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Website & Wizard Kode Tracker — PulseTrack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <style>
+        .wizard-container {
+            max-width: 960px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .wizard-steps {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 18px 30px;
+            margin-bottom: 10px;
+        }
+        .wizard-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-dim);
+            font-weight: 700;
+            font-size: 13.5px;
+        }
+        .wizard-step.active {
+            color: #ffffff;
+        }
+        .wizard-step.active .step-num {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            box-shadow: 0 0 15px var(--primary-glow);
+            color: #ffffff;
+        }
+        .step-num {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+        .step-divider {
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+            margin: 0 20px;
+        }
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+        .form-help {
+            font-size: 11.5px;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+        .badge-style-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+            margin: 20px 0;
+        }
+        .badge-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            cursor: pointer;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .badge-card:hover, .badge-card.selected {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.25);
+        }
+        .badge-card-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+        .sites-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 14px;
+        }
+        .sites-table th {
+            text-align: left;
+            padding: 10px 14px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            font-size: 11px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .sites-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: var(--text-muted);
+        }
+        .sites-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        @media (max-width: 768px) {
+            .form-grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .wizard-steps {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+            .step-divider {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-mesh"></div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">⚡</div>
+            <div class="brand-info">
+                <h2>PulseTrack</h2>
+                <span>● Control Panel</span>
+            </div>
+        </div>
+
+        <span class="nav-group-title">Main Menu</span>
+        <ul class="nav-links">
+            <li>
+                <a href="/index.html" class="nav-link">
+                    <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    <span>Websites List</span>
+                </a>
+            </li>
+            <li>
+                <a href="/dashboard.html" class="nav-link">
+                    <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                    <span>Analytics Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="/keywords.html" class="nav-link">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <span>Keywords & Top URLs</span>
+                </a>
+            </li>
+            <li>
+                <a href="/add-website.html" class="nav-link active">
+                    <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                    <span>+ Add Website (Wizard)</span>
+                </a>
+            </li>
+            <li>
+                <a href="/embed-generator.html" class="nav-link">
+                    <svg viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6M14 4l-4 16"/></svg>
+                    <span>Get Footer Code</span>
+                </a>
+            </li>
+            <li>
+                <a href="/demo.html" target="_blank" class="nav-link">
+                    <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                    <span>Live Demo Web ↗</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content Wizard -->
+    <main class="main-content">
+        <div class="wizard-container">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="header-title">
+                    <h1>🌐 Add a Website & Counter Wizard (Ala Histats)</h1>
+                </div>
+            </header>
+
+            <!-- Wizard Step Breadcrumbs -->
+            <div class="wizard-steps">
+                <div class="wizard-step active" id="stepIndicator1">
+                    <div class="step-num">1</div>
+                    <span>Data Website & Region</span>
+                </div>
+                <div class="step-divider"></div>
+                <div class="wizard-step" id="stepIndicator2">
+                    <div class="step-num">2</div>
+                    <span>Pilih Gaya Counter</span>
+                </div>
+                <div class="step-divider"></div>
+                <div class="wizard-step" id="stepIndicator3">
+                    <div class="step-num">3</div>
+                    <span>Dapatkan Kode Footer</span>
+                </div>
+            </div>
+
+            <!-- STEP 1: FORM TAMBAH WEBSITE (Ala Histats Control Panel) -->
+            <section class="analytics-section" id="sectionStep1">
+                <div class="section-header">
+                    <h3>📝 Langkah 1: Pengaturan Website, Region & Timezone</h3>
+                </div>
+                <p style="color:var(--text-muted); font-size:13.5px; margin-bottom:20px;">
+                    Isi form di bawah ini seperti pada panel control Histats. Jam analitik akan disesuaikan dengan zona waktu yang Anda pilih.
+                </p>
+
+                <form id="formSiteDetails">
+                    <div class="form-grid-2">
+                        <!-- Site URL / Domain -->
+                        <div class="form-group">
+                            <label for="inputDomain">URL / Domain Website <span style="color:var(--danger)">*</span></label>
+                            <input type="text" id="inputDomain" class="form-input" placeholder="Contoh: mywebsite.com atau https://blog.domain.com" required>
+                            <div class="form-help">Domain yang akan dipasangi tracker (tanpa sub-path)</div>
+                        </div>
+
+                        <!-- Site Title -->
+                        <div class="form-group">
+                            <label for="inputTitle">Judul / Nama Website <span style="color:var(--danger)">*</span></label>
+                            <input type="text" id="inputTitle" class="form-input" placeholder="Contoh: Portal Berita & Blog Pribadi" required>
+                            <div class="form-help">Nama untuk identifikasi di dashboard</div>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <!-- Category -->
+                        <div class="form-group">
+                            <label for="inputCategory">Kategori Website</label>
+                            <select id="inputCategory" class="custom-select">
+                                <option value="General / Blog">Blog & Personal</option>
+                                <option value="News & Media">Berita & Media</option>
+                                <option value="E-Commerce">Toko Online / E-Commerce</option>
+                                <option value="Technology">Teknologi & Software</option>
+                                <option value="Business & Finance">Bisnis & Keuangan</option>
+                                <option value="Health & Medical">Kesehatan & Medis</option>
+                                <option value="Entertainment">Hiburan & Musik</option>
+                                <option value="Education">Pendidikan & Tutorial</option>
+                            </select>
+                        </div>
+
+                        <!-- Country / Region -->
+                        <div class="form-group">
+                            <label for="inputCountry">Negara / Region Utama</label>
+                            <select id="inputCountry" class="custom-select">
+                                <option value="ID" selected>🇮🇩 Indonesia (ID)</option>
+                                <option value="US">🇺🇸 United States (US)</option>
+                                <option value="SG">🇸🇬 Singapore (SG)</option>
+                                <option value="MY">🇲🇾 Malaysia (MY)</option>
+                                <option value="GB">🇬🇧 United Kingdom (GB)</option>
+                                <option value="AU">🇦🇺 Australia (AU)</option>
+                                <option value="JP">🇯🇵 Japan (JP)</option>
+                                <option value="DE">🇩🇪 Germany (DE)</option>
+                                <option value="GLOBAL">🌐 Global / Internasional</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <!-- Timezone -->
+                        <div class="form-group">
+                            <label for="inputTimezone">Zona Waktu (Timezone) <span style="color:var(--danger)">*</span></label>
+                            <select id="inputTimezone" class="custom-select">
+                                <option value="Asia/Jakarta" selected>Asia/Jakarta (WIB — GMT+07:00)</option>
+                                <option value="Asia/Makassar">Asia/Makassar (WITA — GMT+08:00)</option>
+                                <option value="Asia/Jayapura">Asia/Jayapura (WIT — GMT+09:00)</option>
+                                <option value="Asia/Singapore">Asia/Singapore (SGT — GMT+08:00)</option>
+                                <option value="Asia/Kuala_Lumpur">Asia/Kuala_Lumpur (MYT — GMT+08:00)</option>
+                                <option value="UTC">UTC (Universal Coordinated Time — GMT+00:00)</option>
+                                <option value="America/New_York">America/New_York (EST — GMT-05:00)</option>
+                                <option value="America/Los_Angeles">America/Los_Angeles (PST — GMT-08:00)</option>
+                                <option value="Europe/London">Europe/London (GMT / BST)</option>
+                            </select>
+                            <div class="form-help">Waktu reset hitungan harian akan mengikuti timezone ini</div>
+                        </div>
+
+                        <!-- Stats Visibility -->
+                        <div class="form-group">
+                            <label for="inputVisibility">Visibilitas Statistik (Stats Visibility)</label>
+                            <select id="inputVisibility" class="custom-select">
+                                <option value="public" selected>🔓 Terbuka (Public — Siapa saja bisa melihat statistik)</option>
+                                <option value="private">🔒 Terkunci (Private — Hanya pemilik)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:24px; display:flex; justify-content:flex-end;">
+                        <button type="submit" class="btn-primary" style="padding:12px 28px; font-size:14px;">
+                            <span>Simpan & Lanjut Pilih Counter &rarr;</span>
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- STEP 2: PILIH GAYA COUNTER (Muncul setelah disimpan) -->
+            <section class="analytics-section" id="sectionStep2" style="display:none;">
+                <div class="section-header">
+                    <h3>🎨 Langkah 2: Pilih Gaya Live Counter (Ala Histats)</h3>
+                </div>
+                <p style="color:var(--text-muted); font-size:13.5px;">
+                    Website <strong id="registeredSiteName" style="color:#ffffff;"></strong> berhasil didaftarkan! Sekarang pilih gaya tampilan live counter widget yang ingin ditampilkan di website:
+                </p>
+
+                <div class="badge-style-grid">
+                    <div class="badge-card selected" data-theme="classic">
+                        <div class="badge-card-title">📻 Classic Histats</div>
+                        <div style="font-size:11.5px; color:var(--text-dim); margin-bottom:12px;">Kotak 3-baris retro (Online, Today, Total)</div>
+                        <img src="/api/badge?theme=classic" alt="Classic Badge" style="max-width:100%;">
+                    </div>
+
+                    <div class="badge-card" data-theme="modern">
+                        <div class="badge-card-title">✨ Modern Pill</div>
+                        <div style="font-size:11.5px; color:var(--text-dim); margin-bottom:12px;">Kapsul elegan + titik hijau online</div>
+                        <img src="/api/badge?theme=modern" alt="Modern Badge" style="max-width:100%;">
+                    </div>
+
+                    <div class="badge-card" data-theme="neon">
+                        <div class="badge-card-title">⚡ Cyberpunk Neon</div>
+                        <div style="font-size:11.5px; color:var(--text-dim); margin-bottom:12px;">Desain gelap glow futuristik</div>
+                        <img src="/api/badge?theme=neon" alt="Neon Badge" style="max-width:100%;">
+                    </div>
+
+                    <div class="badge-card" data-theme="invisible">
+                        <div class="badge-card-title">👻 Invisible Tracker</div>
+                        <div style="font-size:11.5px; color:var(--text-dim); margin-bottom:12px;">100% tersembunyi tanpa menampilkan badge</div>
+                        <div style="padding:15px; color:var(--text-muted); font-size:12px; background:rgba(255,255,255,0.02); border-radius:6px;">
+                            (Tanpa Gambar / Hidden)
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; margin-top:20px;">
+                    <button type="button" class="date-pill" onclick="goToStep(1)">&larr; Kembali Edit Data</button>
+                    <button type="button" class="btn-primary" onclick="goToStep(3)" style="padding:12px 28px;">
+                        <span>Dapatkan Kode Footer &rarr;</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- STEP 3: KODE FOOTER SIAP PASANG -->
+            <section class="analytics-section" id="sectionStep3" style="display:none;">
+                <div class="section-header">
+                    <h3>⚡ Langkah 3: Salin Kode & Pasang di Footer Website</h3>
+                </div>
+                <p style="color:var(--text-muted); font-size:13.5px; margin-bottom:14px;">
+                    Copy kode di bawah ini lalu tempelkan di file template <strong>Footer</strong> (sebelum penutup <code>&lt;/body&gt;</code>) di WordPress, Blogger, PHP, atau HTML Anda:
+                </p>
+
+                <div class="code-block" style="position:relative; margin-bottom:20px;">
+                    <button class="btn-copy" onclick="copyFinalCode(this)">📋 Salin Kode Footer</button>
+                    <code id="finalFooterCode"></code>
+                </div>
+
+                <div style="background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3); border-radius:var(--radius-sm); padding:16px; margin-bottom:20px;">
+                    <h4 style="color:var(--success); font-size:14px; margin-bottom:6px;">✅ Siap Digunakan!</h4>
+                    <p style="color:var(--text-muted); font-size:12.5px;">
+                        Setelah kode ini dipasang di website Anda, setiap kali ada pengunjung yang datang, datanya akan langsung otomatis tercatat di PulseTrack detik itu juga.
+                    </p>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <button type="button" class="date-pill" onclick="goToStep(2)">&larr; Ganti Gaya Counter</button>
+                    <a href="/index.html" class="btn-primary" id="btnGoToDashboard">
+                        <span>Buka Dashboard Statistik Website Ini &rarr;</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- TABEL DAFTAR SEMUA WEBSITE YANG SUDAH DIDAFTARKAN -->
+            <section class="analytics-section">
+                <div class="section-header">
+                    <h3>📋 Daftar Semua Website yang Anda Monitor</h3>
+                </div>
+                <table class="sites-table">
+                    <thead>
+                        <tr>
+                            <th>Nama & Domain</th>
+                            <th>Kategori</th>
+                            <th>Timezone & Region</th>
+                            <th>Total Hits</th>
+                            <th>Live Now</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sitesTableBody">
+                        <tr><td colspan="6" style="text-align:center; padding:20px;">Memuat data website...</td></tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        let currentSiteData = null;
+        let selectedTheme = 'classic';
+        const baseUrl = window.location.origin;
+
+        const formSite = document.getElementById('formSiteDetails');
+        const section1 = document.getElementById('sectionStep1');
+        const section2 = document.getElementById('sectionStep2');
+        const section3 = document.getElementById('sectionStep3');
+        const step1 = document.getElementById('stepIndicator1');
+        const step2 = document.getElementById('stepIndicator2');
+        const step3 = document.getElementById('stepIndicator3');
+
+        const badgeCards = document.querySelectorAll('.badge-card');
+        const finalFooterCode = document.getElementById('finalFooterCode');
+        const sitesTableBody = document.getElementById('sitesTableBody');
+
+        function goToStep(stepNumber) {
+            step1.classList.remove('active');
+            step2.classList.remove('active');
+            step3.classList.remove('active');
+            section1.style.display = 'none';
+            section2.style.display = 'none';
+            section3.style.display = 'none';
+
+            if (stepNumber === 1) {
+                step1.classList.add('active');
+                section1.style.display = 'block';
+            } else if (stepNumber === 2) {
+                step1.classList.add('active');
+                step2.classList.add('active');
+                section2.style.display = 'block';
+            } else if (stepNumber === 3) {
+                step1.classList.add('active');
+                step2.classList.add('active');
+                step3.classList.add('active');
+                section3.style.display = 'block';
+                generateFinalSnippet();
+            }
+        }
+
+        // Form Submit
+        formSite.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const rawDomain = document.getElementById('inputDomain').value.trim();
+            const domain = rawDomain.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+            const name = document.getElementById('inputTitle').value.trim();
+            const category = document.getElementById('inputCategory').value;
+            const country = document.getElementById('inputCountry').value;
+            const timezone = document.getElementById('inputTimezone').value;
+            const visibility = document.getElementById('inputVisibility').value;
+
+            const cleanSiteId = domain.toLowerCase().replace(/[^a-z0-9.-]/g, '-');
+
+            const payload = {
+                id: cleanSiteId,
+                name: name,
+                domain: domain,
+                settings: {
+                    category,
+                    country,
+                    timezone,
+                    visibility
+                }
+            };
+
+            try {
+                const res = await fetch('/api/sites', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (data.ok) {
+                    currentSiteData = { id: cleanSiteId, name, domain, timezone, country };
+                    document.getElementById('registeredSiteName').textContent = `${name} (${domain})`;
+                    localStorage.setItem('pulse_current_site', cleanSiteId);
+                    loadSitesList();
+                    goToStep(2);
+                } else {
+                    alert('Error: ' + (data.error || 'Gagal menyimpan website'));
+                }
+            } catch (err) {
+                alert('Koneksi bermasalah: ' + err.message);
+            }
+        });
+
+        // Theme Selection
+        badgeCards.forEach(card => {
+            card.addEventListener('click', () => {
+                badgeCards.forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedTheme = card.getAttribute('data-theme');
+            });
+        });
+
+        // Generate Final Snippet
+        function generateFinalSnippet() {
+            if (!currentSiteData) return;
+            const siteId = currentSiteData.id;
+
+            let snippet = '';
+            if (selectedTheme === 'invisible') {
+                snippet = `<!-- PulseTrack Invisible Analytics (Paste in Footer / Head) -->\n<script defer src="${baseUrl}/tracker.js" data-site-id="${siteId}"><\/script>`;
+            } else {
+                snippet = `<!-- PulseTrack / Histats Live Counter & Tracker (Paste in Footer) -->\n<div id="histats_counter">\n  <a href="${baseUrl}" target="_blank" title="Live Traffic Analytics">\n    <img src="${baseUrl}/api/badge?site_id=${siteId}&theme=${selectedTheme}" alt="Histats Counter" border="0" />\n  </a>\n</div>\n<script defer src="${baseUrl}/tracker.js" data-site-id="${siteId}"><\/script>`;
+            }
+
+            finalFooterCode.textContent = snippet;
+            document.getElementById('btnGoToDashboard').href = `/index.html`;
+        }
+
+        // Copy Code Button
+        function copyFinalCode(btn) {
+            const code = finalFooterCode.textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const old = btn.textContent;
+                btn.textContent = '✅ Berhasil Disalin!';
+                setTimeout(() => { btn.textContent = old; }, 2000);
+            });
+        }
+
+        // Load Sites Table List
+        async function loadSitesList() {
+            try {
+                const res = await fetch('/api/sites');
+                const data = await res.json();
+                if (data.ok && data.sites) {
+                    if (data.sites.length === 0) {
+                        sitesTableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--text-dim);">Belum ada website yang didaftarkan.</td></tr>';
+                        return;
+                    }
+
+                    sitesTableBody.innerHTML = data.sites.map(s => {
+                        let settings = {};
+                        try {
+                            settings = typeof s.settings === 'string' ? JSON.parse(s.settings || '{}') : (s.settings || {});
+                        } catch(e) {}
+
+                        const tz = settings.timezone || 'Asia/Jakarta';
+                        const cat = settings.category || 'General';
+                        const country = settings.country || 'ID';
+
+                        return `
+                            <tr>
+                                <td>
+                                    <div style="font-weight:700; color:#ffffff;">${escapeHTML(s.name)}</div>
+                                    <div style="font-size:12px; color:var(--primary);">${escapeHTML(s.domain)}</div>
+                                </td>
+                                <td><span class="tag-pill">${escapeHTML(cat)}</span></td>
+                                <td>
+                                    <div style="font-size:12px; color:#f8fafc;">${escapeHTML(tz)}</div>
+                                    <div style="font-size:11px; color:var(--text-dim);">Region: ${escapeHTML(country)}</div>
+                                </td>
+                                <td><strong style="color:#ffffff;">${Number(s.total_views || 0).toLocaleString()}</strong></td>
+                                <td><span style="color:var(--success); font-weight:700;">🟢 ${s.online_now || 0}</span></td>
+                                <td>
+                                    <button class="date-pill" onclick="selectSiteForCode('${s.id}', '${escapeHTML(s.name)}', '${escapeHTML(s.domain)}')">🔧 Kode</button>
+                                    <button class="date-pill" style="color:var(--primary);" onclick="openSiteDashboard('${s.id}')">📊 Stats</button>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+            } catch(e) {
+                console.error('Failed to load sites:', e);
+            }
+        }
+
+        function selectSiteForCode(id, name, domain) {
+            currentSiteData = { id, name, domain };
+            document.getElementById('registeredSiteName').textContent = `${name} (${domain})`;
+            goToStep(2);
+        }
+
+        function openSiteDashboard(siteId) {
+            localStorage.setItem('pulse_current_site', siteId);
+            window.location.href = '/index.html';
+        }
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        loadSitesList();
+    </script>
+</body>
+</html>
