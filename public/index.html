@@ -309,7 +309,16 @@
             color: #dc2626;
         }
 
-        /* ================= MOBILE RESPONSIVENESS & PREMIUM POLISH ================= */
+        /* ================= AUTHENTIC HISTATS RESPONSIVE TABLE ================= */
+        .table-responsive-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+
         @media (max-width: 768px) {
             .histats-header {
                 padding: 10px 14px;
@@ -321,104 +330,49 @@
                 font-size: 17px;
             }
             .histats-logo span:last-child {
-                display: none; /* Hide Control Panel badge on small screens */
-            }
-            .histats-top-menu {
-                display: flex;
-                align-items: center;
-                gap: 8px;
+                display: none;
             }
             .main-container {
                 margin: 10px auto;
-                padding: 0 10px;
+                padding: 0 6px;
             }
             .histats-tabs-bar {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-                gap: 6px;
-                margin-bottom: 8px;
-            }
-            .tab-group-left {
-                display: flex;
-                gap: 4px;
+                margin-bottom: 0px;
             }
             .histats-tab {
-                padding: 7px 12px;
+                padding: 6px 14px;
                 font-size: 12px;
             }
             .btn-add-website {
-                padding: 6px 10px;
+                padding: 5px 8px;
                 font-size: 12px;
-                background: #e0f2fe;
-                border-radius: 4px;
-            }
-
-            /* Responsive Table Card for Mobile */
-            .histats-table-header {
-                display: none;
             }
             .histats-panel-table {
-                background: transparent;
-                border: none;
-                box-shadow: none;
-            }
-            .histats-row {
-                display: flex;
-                flex-direction: column;
-                padding: 14px;
-                gap: 10px;
-                background: #ffffff;
-                border: 1px solid #cbd5e1;
-                border-radius: 8px;
-                margin-bottom: 12px;
-                box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+                min-width: 620px; /* Ensures clean horizontal Histats layout without collapsing */
             }
             .histats-cell-id {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 0;
-                font-size: 12px;
-                font-weight: 700;
-                color: #64748b;
-                border-bottom: 1px dashed #e2e8f0;
-                padding-bottom: 6px;
+                font-size: 12.5px;
+                padding: 8px 10px;
             }
             .histats-cell-content {
-                padding: 0;
+                padding: 8px 10px;
             }
             .histats-site-title {
-                font-size: 16px;
-                font-weight: 800;
-                color: #0f172a;
+                font-size: 13.5px;
             }
             .histats-stats-subline {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
+                font-size: 11px;
                 gap: 8px;
-                background: #f8fafc;
-                padding: 8px 10px;
-                border-radius: 6px;
-                border: 1px solid #f1f5f9;
-                margin-top: 6px;
-                font-size: 11.5px;
             }
             .histats-cell-actions {
-                padding: 8px 0 0 0;
-                width: 100%;
-                display: grid;
-                grid-template-columns: repeat(5, 1fr);
-                gap: 6px;
-                border-top: 1px solid #f1f5f9;
+                padding: 8px 10px;
+                width: 160px;
             }
             .action-icon-btn {
-                width: 100%;
-                height: 38px;
-                font-size: 16px;
-                margin-left: 0;
-                border-radius: 6px;
+                width: 26px;
+                height: 26px;
+                font-size: 13px;
+                margin-left: 2px;
             }
         }
 
@@ -615,7 +569,7 @@
         </div>
 
         <!-- 1. WEBSITES TABLE VIEW -->
-        <div id="viewWebsites">
+        <div id="viewWebsites" class="table-responsive-wrapper">
             <table class="histats-panel-table">
                 <thead class="histats-table-header">
                     <tr>
