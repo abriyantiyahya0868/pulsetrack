@@ -1223,7 +1223,21 @@
             const totalViews = sum.total_pageviews || 0;
             const totalVisitors = sum.unique_visitors || 0;
             const ppv = totalVisitors > 0 ? (totalViews / totalVisitors).toFixed(2) : '1.00';
-            const onlineNow = sum.online_now !== undefined ? sum.online_now : (data.recent ? (new Set(data.recent.map(r => r.visitor_id))).size : 1);
+            
+            // Calculate active unique visitors within last 5 minutes
+            const recentActiveVisitors = new Set(
+                (data.recent || [])
+                    .filter(r => {
+                        if (!r.created_at) return false;
+                        const n = r.created_at.endsWith('Z') ? r.created_at : r.created_at.replace(' ', 'T') + 'Z';
+                        return (Date.now() - new Date(n).getTime()) <= 5 * 60 * 1000;
+                    })
+                    .map(r => r.visitor_id || r.session_id)
+            ).size;
+
+            const onlineNow = (sum.online_now && sum.online_now > 0) 
+                ? sum.online_now 
+                : Math.max(recentActiveVisitors, (data.recent && data.recent.length > 0 ? 1 : 0));
 
             document.getElementById('sumTotalViews').textContent = Number(totalViews).toLocaleString();
             document.getElementById('sumTotalVisitors').textContent = Number(totalVisitors).toLocaleString();

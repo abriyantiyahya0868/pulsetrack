@@ -67,11 +67,11 @@ export async function onRequestGet(context) {
         `;
         const summary = (await db.prepare(summaryQuery).bind(...params).first()) || {};
 
-        // 2. Realtime active visitors (Distinct unique visitors in last 3 minutes)
+        // 2. Realtime active visitors (Distinct active sessions in last 5 minutes)
         let onlineCount = 0;
         try {
             let hbParams = [];
-            let hbSql = "SELECT COUNT(DISTINCT visitor_id) as c FROM heartbeats WHERE last_ping >= datetime('now', '-3 minutes')";
+            let hbSql = "SELECT COUNT(DISTINCT session_id) as c FROM heartbeats WHERE last_ping >= datetime('now', '-5 minutes')";
             if (siteId && siteId !== "all") {
                 hbSql += " AND site_id = ?";
                 hbParams.push(siteId);
@@ -79,7 +79,7 @@ export async function onRequestGet(context) {
             const hbRes = await db.prepare(hbSql).bind(...hbParams).first();
 
             let pvParams = [];
-            let pvSql = "SELECT COUNT(DISTINCT visitor_id) as c FROM pageviews WHERE created_at >= datetime('now', '-3 minutes')";
+            let pvSql = "SELECT COUNT(DISTINCT session_id) as c FROM pageviews WHERE created_at >= datetime('now', '-5 minutes')";
             if (siteId && siteId !== "all") {
                 pvSql += " AND site_id = ?";
                 pvParams.push(siteId);
