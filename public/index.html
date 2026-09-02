@@ -309,6 +309,82 @@
             color: #dc2626;
         }
 
+        /* ================= MOBILE RESPONSIVENESS & PREMIUM POLISH ================= */
+        @media (max-width: 768px) {
+            .histats-header {
+                padding: 10px 14px;
+                flex-direction: column;
+                gap: 8px;
+                align-items: stretch;
+            }
+            .histats-top-menu {
+                justify-content: space-between;
+                width: 100%;
+            }
+            .main-container {
+                margin: 10px auto;
+                padding: 0 10px;
+            }
+            .histats-tabs-bar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .tab-group-left {
+                width: 100%;
+            }
+            .histats-tab {
+                flex: 1;
+                justify-content: center;
+                padding: 8px 12px;
+            }
+            .btn-add-website {
+                justify-content: center;
+                background: #e0f2fe;
+                padding: 8px 12px;
+            }
+
+            /* Responsive Table Conversion for Mobile */
+            .histats-table-header {
+                display: none;
+            }
+            .histats-row {
+                display: flex;
+                flex-direction: column;
+                padding: 12px;
+                gap: 8px;
+                border-bottom: 2px solid #e2e8f0;
+            }
+            .histats-cell-id {
+                padding: 0;
+                font-size: 13px;
+                color: #64748b;
+            }
+            .histats-cell-content {
+                padding: 0;
+            }
+            .histats-site-title {
+                font-size: 15px;
+            }
+            .histats-stats-subline {
+                gap: 10px;
+                font-size: 11.5px;
+            }
+            .histats-cell-actions {
+                padding: 6px 0 0 0;
+                text-align: left;
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+            }
+            .action-icon-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 15px;
+                margin-left: 0;
+            }
+        }
+
         /* Modal Dialogs */
         .modal-overlay {
             position: fixed;

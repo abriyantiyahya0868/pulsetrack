@@ -595,9 +595,46 @@
         }
 
         @media (max-width: 860px) {
-            .body-layout { flex-direction: column; }
-            .sidebar-panel { width: 100%; min-width: 100%; }
-            .summary-top-grid, .bottom-split-grid { grid-template-columns: 1fr; }
+            .site-top-header {
+                padding: 10px 14px;
+                flex-direction: column;
+                gap: 8px;
+                align-items: stretch;
+            }
+            .header-action-buttons {
+                justify-content: space-between;
+                width: 100%;
+            }
+            .body-layout { 
+                flex-direction: column; 
+            }
+            .sidebar-panel { 
+                width: 100%; 
+                min-width: 100%; 
+                padding: 8px 10px;
+            }
+            .summary-top-grid, .bottom-split-grid { 
+                grid-template-columns: 1fr; 
+            }
+            .metrics-strip {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                background: #e2e8f0;
+                gap: 1px;
+            }
+            .metric-cell {
+                background: #ffffff;
+                border-right: none;
+                padding: 8px 4px;
+            }
+            .forecast-card {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .recent-cell-geo {
+                width: 100px;
+                max-width: 100px;
+            }
         }
     </style>
 </head>
