@@ -987,6 +987,18 @@
             }
         }
 
+        function checkAuth() {
+            const userEmailEl = document.getElementById('userEmailDisplay');
+            if (userEmailEl) {
+                try {
+                    const user = JSON.parse(userInfoStr || '{}');
+                    userEmailEl.textContent = user.email || user.name || 'User';
+                } catch(e) {
+                    userEmailEl.textContent = 'User';
+                }
+            }
+        }
+
         function escapeHTML(str) {
             if (!str) return '';
             return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');

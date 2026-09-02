@@ -824,17 +824,14 @@
         }
 
         function checkAuth() {
-            if (!authToken) {
-                // If not logged in, redirect to login page
-                window.location.href = '/login.html';
-                return;
-            }
-
-            try {
-                const user = JSON.parse(userInfoStr || '{}');
-                document.getElementById('userEmailDisplay').textContent = user.email || user.name || 'User';
-            } catch(e) {
-                document.getElementById('userEmailDisplay').textContent = 'User';
+            const userEmailEl = document.getElementById('userEmailDisplay');
+            if (userEmailEl) {
+                try {
+                    const user = JSON.parse(userInfoStr || '{}');
+                    userEmailEl.textContent = user.email || user.name || 'User';
+                } catch(e) {
+                    userEmailEl.textContent = 'User';
+                }
             }
         }
 
