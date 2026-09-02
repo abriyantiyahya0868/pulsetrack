@@ -208,6 +208,7 @@ export async function onRequestGet(context) {
         const os = (await db.prepare(osQuery).bind(...params).all()).results || [];
 
         // 11. Live Recent Feed
+        const siteOnlyParams = (siteId && siteId !== "all") ? [siteId] : [];
         const feedQuery = `
             SELECT 
                 p.visitor_id, p.session_id, p.path, p.title, COALESCE(s.domain, p.site_id) as domain, p.referrer_domain, p.keyword, p.search_engine, p.country, p.city, p.browser, p.os, p.device, p.created_at 
@@ -217,7 +218,7 @@ export async function onRequestGet(context) {
             ORDER BY p.id DESC
             LIMIT 25
         `;
-        const recentLog = (await db.prepare(feedQuery).bind(...onlineParams).all()).results || [];
+        const recentLog = (await db.prepare(feedQuery).bind(...siteOnlyParams).all()).results || [];
 
         // 12. Most Active Visitors
         const activeVisitorsQuery = `
@@ -233,7 +234,7 @@ export async function onRequestGet(context) {
             ORDER BY hits DESC
             LIMIT 10
         `;
-        const activeVisitors = (await db.prepare(activeVisitorsQuery).bind(...onlineParams).all()).results || [];
+        const activeVisitors = (await db.prepare(activeVisitorsQuery).bind(...siteOnlyParams).all()).results || [];
 
         return new Response(JSON.stringify({
             ok: true,
