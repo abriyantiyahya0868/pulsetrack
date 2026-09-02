@@ -594,24 +594,56 @@
             margin: 0 6px;
         }
 
+        .btn-header-action {
+            background: linear-gradient(180deg, #1e3a5f 0%, #0f243d 100%);
+            border: 1px solid #38bdf8;
+            color: #e0f2fe;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+            transition: all 0.15s;
+            cursor: pointer;
+        }
+
+        .btn-header-action:hover, .btn-header-action.active-pill {
+            background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+            border-color: #93c5fd;
+            color: #ffffff;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+
         @media (max-width: 860px) {
             .site-top-header {
-                padding: 10px 14px;
+                padding: 10px 12px;
                 flex-direction: column;
                 gap: 8px;
                 align-items: stretch;
             }
             .header-action-buttons {
-                justify-content: space-between;
+                display: grid;
+                grid-template-columns: 1fr 1.25fr 1.35fr;
+                gap: 6px;
                 width: 100%;
+            }
+            .header-action-buttons .btn-header-action {
+                justify-content: center;
+                padding: 8px 4px;
+                font-size: 12px;
+            }
+            .sidebar-panel { 
+                display: none !important; /* Hide long sidebar on mobile */
             }
             .body-layout { 
                 flex-direction: column; 
             }
-            .sidebar-panel { 
-                width: 100%; 
-                min-width: 100%; 
-                padding: 8px 10px;
+            .content-panel {
+                padding: 8px 6px;
             }
             .summary-top-grid, .bottom-split-grid { 
                 grid-template-columns: 1fr; 
@@ -632,8 +664,8 @@
                 gap: 10px;
             }
             .recent-cell-geo {
-                width: 100px;
-                max-width: 100px;
+                width: 95px;
+                max-width: 95px;
             }
         }
     </style>
@@ -656,15 +688,15 @@
         </div>
 
         <div class="header-action-buttons">
-            <a href="/home.html" class="btn-header-action" style="background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%); border-color: #60a5fa; color:#ffffff;">
+            <a href="/index.html" class="btn-header-action">
                 <span>🏠</span> Home
             </a>
-            <a href="/index.html" class="btn-header-action">
-                <span>📁</span> Website Account
-            </a>
-            <a href="/embed-generator.html" class="btn-header-action">
-                <span>&lt;&gt;</span> Counter CODE
-            </a>
+            <button id="btnHeaderSummary" class="btn-header-action active-pill" onclick="switchView('summary')">
+                <span>📊</span> Ringkasan
+            </button>
+            <button id="btnHeaderOnline" class="btn-header-action" onclick="switchView('online')">
+                <span>🟢</span> Users online
+            </button>
         </div>
     </header>
 
@@ -1060,19 +1092,25 @@
         const navSummary = document.getElementById('navSummary');
         const navOnline = document.getElementById('navOnline');
         const navTraffic = document.getElementById('navTraffic');
+        const btnHeaderSummary = document.getElementById('btnHeaderSummary');
+        const btnHeaderOnline = document.getElementById('btnHeaderOnline');
 
         if (viewName === 'summary') {
             viewSummary.style.display = 'flex';
             viewOnline.style.display = 'none';
-            navSummary.className = 'active';
-            navTraffic.className = '';
-            navOnline.className = '';
+            if (navSummary) navSummary.className = 'active';
+            if (navTraffic) navTraffic.className = '';
+            if (navOnline) navOnline.className = '';
+            if (btnHeaderSummary) btnHeaderSummary.classList.add('active-pill');
+            if (btnHeaderOnline) btnHeaderOnline.classList.remove('active-pill');
         } else {
             viewSummary.style.display = 'none';
             viewOnline.style.display = 'flex';
-            navSummary.className = '';
-            navTraffic.className = '';
-            navOnline.className = 'active';
+            if (navSummary) navSummary.className = '';
+            if (navTraffic) navTraffic.className = '';
+            if (navOnline) navOnline.className = 'active';
+            if (btnHeaderSummary) btnHeaderSummary.classList.remove('active-pill');
+            if (btnHeaderOnline) btnHeaderOnline.classList.add('active-pill');
         }
     }
 
