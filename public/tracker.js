@@ -119,7 +119,7 @@
         return 'Other';
     }
 
-    // Send payload to backend
+    // Send payload to backend with bulletproof cross-origin transport
     function sendPayload(endpoint, data) {
         var payload = Object.assign({
             site_id: siteId,
@@ -129,28 +129,39 @@
         }, data);
 
         var url = apiUrl.replace(/\/+$/, '') + '/api/' + endpoint;
-
-        // Try navigator.sendBeacon if available (ideal for unload/background)
         var jsonStr = JSON.stringify(payload);
-        if (navigator.sendBeacon && typeof Blob !== 'undefined') {
-            var blob = new Blob([jsonStr], { type: 'application/json' });
-            if (navigator.sendBeacon(url, blob)) return;
-        }
 
-        // Fallback to fetch / XHR
+        // 1. Standard modern Fetch with text/plain (avoids cross-origin preflight errors)
         if (window.fetch) {
             fetch(url, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors',
+                headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
                 body: jsonStr,
                 keepalive: true
-            }).catch(function () { });
-        } else {
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', url, true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(jsonStr);
+            }).catch(function () {
+                sendImageBeacon(url, jsonStr);
+            });
+            return;
         }
+
+        // 2. Navigator SendBeacon with text/plain
+        if (navigator.sendBeacon && typeof Blob !== 'undefined') {
+            try {
+                var blob = new Blob([jsonStr], { type: 'text/plain;charset=UTF-8' });
+                if (navigator.sendBeacon(url, blob)) return;
+            } catch(e) {}
+        }
+
+        // 3. Fallback Image Beacon (Zero CORS restriction)
+        sendImageBeacon(url, jsonStr);
+    }
+
+    function sendImageBeacon(url, jsonStr) {
+        try {
+            var img = new Image();
+            img.src = url + '?data=' + encodeURIComponent(jsonStr) + '&_t=' + Date.now();
+        } catch(e) {}
     }
 
     // Extract search engine & keyword from referrer or page search params

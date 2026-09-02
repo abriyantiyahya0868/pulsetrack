@@ -1,18 +1,65 @@
 // Cloudflare Pages Function: Ingestion Collector (/api/collect)
 
+const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
+    "Access-Control-Max-Age": "86400",
+};
+
+export async function onRequestOptions() {
+    return new Response(null, {
+        status: 204,
+        headers: corsHeaders
+    });
+}
+
+export async function onRequestGet(context) {
+    return handleCollect(context);
+}
+
 export async function onRequestPost(context) {
+    return handleCollect(context);
+}
+
+async function handleCollect(context) {
     const { request, env } = context;
     const db = env.DB;
 
     if (!db) {
         return new Response(JSON.stringify({ error: "Database binding 'DB' not configured" }), {
             status: 500,
-            headers: { "Content-Type": "application/json" }
+            headers: { "Content-Type": "application/json", ...corsHeaders }
         });
     }
 
     try {
-        const data = await request.json();
+        let data = {};
+
+        // Parse Payload from JSON, Text, or Query Params
+        if (request.method === "POST") {
+            try {
+                data = await request.json();
+            } catch (e) {
+                try {
+                    const text = await request.text();
+                    data = JSON.parse(text);
+                } catch (e2) {
+                    data = {};
+                }
+            }
+        } else {
+            const url = new URL(request.url);
+            const dataParam = url.searchParams.get("data");
+            if (dataParam) {
+                try {
+                    data = JSON.parse(decodeURIComponent(dataParam));
+                } catch (e) {
+                    data = {};
+                }
+            }
+        }
+
         const siteId = data.site_id || "default";
         const sessionId = data.session_id || "unknown";
         const visitorId = data.visitor_id || "unknown";
@@ -94,7 +141,7 @@ export async function onRequestPost(context) {
             `).bind(sessionId, siteId, path, title, country, city, browser, device).run();
 
             return new Response(JSON.stringify({ ok: true, status: "pageview_recorded" }), {
-                headers: { "Content-Type": "application/json" }
+                headers: { "Content-Type": "application/json", ...corsHeaders }
             });
 
         } else if (type === "heartbeat") {
@@ -128,7 +175,7 @@ export async function onRequestPost(context) {
             }
 
             return new Response(JSON.stringify({ ok: true, status: "heartbeat_updated" }), {
-                headers: { "Content-Type": "application/json" }
+                headers: { "Content-Type": "application/json", ...corsHeaders }
             });
 
         } else if (type === "event") {
@@ -142,19 +189,19 @@ export async function onRequestPost(context) {
             `).bind(siteId, sessionId, eventName, eventData, path).run();
 
             return new Response(JSON.stringify({ ok: true, status: "event_recorded" }), {
-                headers: { "Content-Type": "application/json" }
+                headers: { "Content-Type": "application/json", ...corsHeaders }
             });
         }
 
         return new Response(JSON.stringify({ error: "Invalid type" }), {
             status: 400,
-            headers: { "Content-Type": "application/json" }
+            headers: { "Content-Type": "application/json", ...corsHeaders }
         });
 
     } catch (err) {
         return new Response(JSON.stringify({ error: err.message }), {
             status: 500,
-            headers: { "Content-Type": "application/json" }
+            headers: { "Content-Type": "application/json", ...corsHeaders }
         });
     }
 }
