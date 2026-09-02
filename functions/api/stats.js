@@ -236,6 +236,19 @@ export async function onRequestGet(context) {
         `;
         const activeVisitors = (await db.prepare(activeVisitorsQuery).bind(...siteOnlyParams).all()).results || [];
 
+        // Calculate realtime active online users from recent activity in last 5 minutes
+        const nowMs = Date.now();
+        const activeSessionSet = new Set();
+        for (const item of recentLog) {
+            if (!item.created_at) continue;
+            const normalized = item.created_at.endsWith('Z') ? item.created_at : item.created_at.replace(' ', 'T') + 'Z';
+            const diffMs = nowMs - new Date(normalized).getTime();
+            if (diffMs >= 0 && diffMs <= 5 * 60 * 1000) {
+                activeSessionSet.add(item.visitor_id || item.session_id);
+            }
+        }
+        const onlineCount = Math.max(activeSessionSet.size, (recentLog.length > 0 ? 1 : 0));
+
         return new Response(JSON.stringify({
             ok: true,
             site_id: siteId,
