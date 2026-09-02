@@ -5,8 +5,9 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // State
-    let currentSiteId = localStorage.getItem('pulse_current_site') || 'demo-site-1';
-    let currentPeriod = '7d';
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentSiteId = urlParams.get('site_id') || localStorage.getItem('pulse_current_site') || '';
+    let currentPeriod = urlParams.get('period') || '7d';
     let statsChart = null;
     let realtimeTimer = null;
 
@@ -49,24 +50,31 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Sites Dropdown
     async function loadSites() {
         try {
-            const res = await fetch('/api/sites');
+            const token = localStorage.getItem('pulse_auth_token');
+            const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+            const res = await fetch('/api/sites', { headers });
             const data = await res.json();
-            if (data.ok && data.sites) {
-                siteSelect.innerHTML = '';
+            
+            if (data.ok && data.sites && data.sites.length > 0) {
+                siteSelect.innerHTML = '<option value="all">🌐 All Websites (Combined)</option>';
                 data.sites.forEach(site => {
                     const opt = document.createElement('option');
                     opt.value = site.id;
                     opt.textContent = `${site.name} (${site.domain})`;
-                    if (site.id === currentSiteId) opt.selected = true;
+                    if (site.id === currentSiteId || site.domain === currentSiteId) opt.selected = true;
                     siteSelect.appendChild(opt);
                 });
 
-                // If saved site is not found, fallback to first
-                if (!data.sites.some(s => s.id === currentSiteId) && data.sites.length > 0) {
+                if (!currentSiteId || (!data.sites.some(s => s.id === currentSiteId || s.domain === currentSiteId) && currentSiteId !== 'all')) {
                     currentSiteId = data.sites[0].id;
                     siteSelect.value = currentSiteId;
                 }
+            } else {
+                siteSelect.innerHTML = '<option value="mobi.capegrace.com">mobi.capegrace.com</option><option value="all">All Websites</option>';
+                if (!currentSiteId) currentSiteId = 'mobi.capegrace.com';
+                siteSelect.value = currentSiteId;
             }
+            localStorage.setItem('pulse_current_site', currentSiteId);
         } catch (err) {
             console.error('Failed to load sites:', err);
         }
