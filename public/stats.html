@@ -10,6 +10,15 @@
     <!-- Chart.js for Authentic Histats 24H & Monthly Bar Charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
+        #trackedDomainName, [id*="trackedDomain"], [class*="tracked-domain"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            max-height: 0 !important;
+            overflow: hidden !important;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -1114,6 +1123,15 @@
             if (btnHeaderOnline) btnHeaderOnline.classList.add('active-pill');
         }
     }
+    function cleanDomainElements() {
+        document.querySelectorAll('.live-overview-card div').forEach(d => {
+            if (d.textContent.includes('Domain:')) d.remove();
+        });
+        const dEl = document.getElementById('trackedDomainName');
+        if (dEl && dEl.parentElement) dEl.parentElement.remove();
+    }
+    setInterval(cleanDomainElements, 300);
+    document.addEventListener('DOMContentLoaded', cleanDomainElements);
 
     // Country flags with reliable text label
     const countryNames = {
