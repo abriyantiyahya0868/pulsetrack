@@ -1,4 +1,6 @@
-/viewstats.html /stats.html 302
-/viewstats /stats.html 302
+/keywords.html /index.html 302
+/keywords /index.html 302
 /dashboard.html /stats.html 302
 /dashboard /stats.html 302
+/viewstats.html /stats.html 302
+/viewstats /stats.html 302
