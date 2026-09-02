@@ -6,4 +6,4 @@ pages_build_output_dir = "public"
 [[d1_databases]]
 binding = "DB"
 database_name = "pulsetrack_db"
-database_id = "408e44bc-efff-40d6-a151-ec59d012c707"
+database_id = "daa8d8e8-f47f-44f4-b89a-9cf8086fd480"
