@@ -892,19 +892,33 @@
 
             <!-- ============================== VIEW 2: USERS ONLINE (GAMBAR 2) ============================== -->
             <div id="viewOnlineContainer" style="display:none; flex-direction:column; gap:10px;">
-                <!-- GLOSSY BLUE USERS ONLINE HEADER -->
-                <div class="online-title-banner">
-                    <div class="online-text-left">
-                        Users online: <span id="onlineUsersCount">0</span>
+                
+                <!-- BIG CENTERED USERS ONLINE & DOMAIN CARD -->
+                <div class="live-overview-card" style="background: linear-gradient(180deg, #1e3a8a 0%, #0f172a 100%); border: 1px solid #38bdf8; border-radius: 6px; padding: 14px 16px; text-align: center; color: #ffffff; box-shadow: 0 4px 14px rgba(0,0,0,0.18);">
+                    <div style="font-size: 12.5px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        <span style="display:inline-block; width:8px; height:8px; background:#22c55e; border-radius:50%; box-shadow: 0 0 10px #22c55e;"></span>
+                        ⚡ PulseTrack Live Realtime Stream
                     </div>
-                    <div class="online-text-right">
-                        <span>browsing: <strong id="browsingPagesCount">0</strong> halaman</span>
-                        <button class="btn-pause-stream" id="btnPause" onclick="togglePause()" title="Pause/Resume Stream">⏸</button>
+                    
+                    <div style="margin: 8px 0;">
+                        <div style="font-size: 42px; font-weight: 900; color: #ffffff; letter-spacing: -1.5px; text-shadow: 0 2px 10px rgba(0,0,0,0.6); line-height: 1.1;">
+                            <span id="bigOnlineCount">0</span> <span style="font-size: 20px; font-weight: 700; color: #60a5fa;">Users Online</span>
+                        </div>
+                        <div style="font-size: 14px; font-weight: 700; color: #facc15; margin-top: 4px;">
+                            🌐 Domain: <span id="trackedDomainName" style="color: #ffffff; text-decoration: underline;">mobi.capegrace.com</span>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 14px; font-size: 12px; color: #cbd5e1; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 8px; margin-top: 6px; flex-wrap: wrap;">
+                        <span>Browsing: <strong id="browsingPagesCount" style="color:#ffffff;">0</strong> Halaman</span>
+                        <span>•</span>
+                        <span>Feed: <strong style="color:#4ade80;">10 Menit Terakhir</strong></span>
+                        <button class="btn-pause-stream" id="btnPause" onclick="togglePause()" title="Pause/Resume Stream" style="margin-left: 4px;">⏸</button>
                     </div>
                 </div>
 
-                <!-- SUB-NAV TABS -->
-                <nav class="subnav-tabs-bar">
+                <!-- SUB-NAV TABS (HORIZONTAL SCROLL ON MOBILE) -->
+                <nav class="subnav-tabs-bar" style="overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; padding-bottom: 2px;">
                     <a class="subnav-tab-item active" onclick="switchView('online')">Summary</a>
                     <a class="subnav-tab-item" onclick="switchView('online')">Terbaru</a>
                     <a class="subnav-tab-item" onclick="switchView('online')">Most active visitors</a>
@@ -1201,7 +1215,15 @@
             renderMonthlyTrendChart(data.chart);
 
             // ================= RENDER VIEW 2: USERS ONLINE =================
-            document.getElementById('onlineUsersCount').textContent = onlineNow;
+            const onlineUsersCountEl = document.getElementById('onlineUsersCount');
+            if (onlineUsersCountEl) onlineUsersCountEl.textContent = onlineNow;
+
+            const bigOnlineEl = document.getElementById('bigOnlineCount');
+            if (bigOnlineEl) bigOnlineEl.textContent = onlineNow;
+
+            const trackedDomainEl = document.getElementById('trackedDomainName');
+            if (trackedDomainEl) trackedDomainEl.textContent = data.site_id || currentSiteId;
+
             document.getElementById('browsingPagesCount').textContent = data.pages ? data.pages.length : 1;
 
             cachedRecent = data.recent || [];
