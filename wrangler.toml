@@ -1,3 +1,9 @@
-name = "pulsetrack"
+name = "pulsetrack-app"
 compatibility_date = "2024-04-01"
 pages_build_output_dir = "public"
+
+# Cloudflare D1 Database Binding
+[[d1_databases]]
+binding = "DB"
+database_name = "pulsetrack_db"
+database_id = "408e44bc-efff-40d6-a151-ec59d012c707"
