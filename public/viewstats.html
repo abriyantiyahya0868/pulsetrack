@@ -926,15 +926,31 @@
         }
     }
 
-    // Render & dynamically update elapsed times
+    // Render & dynamically update elapsed times (Max 10 Minutes)
     function renderRecentTable() {
         const tbody = document.getElementById('recentTableBody');
         if (!cachedRecent || cachedRecent.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:15px; color:#64748b;">Belum ada data kunjungan terbaru</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:15px; color:#64748b;">Belum ada data kunjungan dalam 10 menit terakhir</td></tr>';
             return;
         }
 
-        tbody.innerHTML = cachedRecent.map(item => {
+        const now = Date.now();
+        const maxAgeSecs = 10 * 60; // 10 minutes limit
+
+        const filtered = cachedRecent.filter(item => {
+            if (!item.created_at) return false;
+            const normalized = item.created_at.endsWith('Z') ? item.created_at : item.created_at.replace(' ', 'T') + 'Z';
+            const hitTime = new Date(normalized).getTime();
+            const diffSecs = (now - hitTime) / 1000;
+            return diffSecs >= 0 && diffSecs <= maxAgeSecs;
+        });
+
+        if (filtered.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:15px; color:#64748b;">Tidak ada pengunjung baru dalam 10 menit terakhir</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = filtered.map(item => {
             const timeStr = formatTimeElapsed(item.created_at);
             const info = getCountryInfo(item.country, item.city);
             const devIcon = getDeviceIcon(item.device, item.os);
