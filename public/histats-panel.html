@@ -795,7 +795,7 @@
         // Open Statistics Dashboard for selected site
         function openStats(siteId) {
             localStorage.setItem('pulse_current_site', siteId);
-            window.location.href = '/index.html';
+            window.location.href = `/viewstats.html?site_id=${encodeURIComponent(siteId)}`;
         }
 
         function openStatsFromModal() {

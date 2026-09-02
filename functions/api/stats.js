@@ -200,14 +200,30 @@ export async function onRequestGet(context) {
         // 11. Live Recent Feed
         const feedQuery = `
             SELECT 
-                p.path, p.title, COALESCE(s.domain, p.site_id) as domain, p.referrer_domain, p.keyword, p.search_engine, p.country, p.city, p.browser, p.os, p.device, p.created_at 
+                p.visitor_id, p.session_id, p.path, p.title, COALESCE(s.domain, p.site_id) as domain, p.referrer_domain, p.keyword, p.search_engine, p.country, p.city, p.browser, p.os, p.device, p.created_at 
             FROM pageviews p
             LEFT JOIN sites s ON p.site_id = s.id
             WHERE 1=1 ${siteCondition}
             ORDER BY p.id DESC
-            LIMIT 20
+            LIMIT 25
         `;
         const recentLog = (await db.prepare(feedQuery).bind(...onlineParams).all()).results || [];
+
+        // 12. Most Active Visitors
+        const activeVisitorsQuery = `
+            SELECT 
+                p.visitor_id, p.country, p.city, p.browser, p.os, p.device, 
+                COUNT(*) as hits, 
+                MAX(p.title) as last_title, 
+                MAX(p.path) as last_path, 
+                MAX(p.created_at) as last_seen
+            FROM pageviews p
+            WHERE 1=1 ${siteCondition}
+            GROUP BY p.visitor_id
+            ORDER BY hits DESC
+            LIMIT 10
+        `;
+        const activeVisitors = (await db.prepare(activeVisitorsQuery).bind(...onlineParams).all()).results || [];
 
         return new Response(JSON.stringify({
             ok: true,
@@ -230,7 +246,8 @@ export async function onRequestGet(context) {
             devices: devices,
             browsers: browsers,
             os: os,
-            recent: recentLog
+            recent: recentLog,
+            active_visitors: activeVisitors
         }), {
             headers: {
                 "Content-Type": "application/json",
