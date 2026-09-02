@@ -1223,7 +1223,7 @@
             const totalViews = sum.total_pageviews || 0;
             const totalVisitors = sum.unique_visitors || 0;
             const ppv = totalVisitors > 0 ? (totalViews / totalVisitors).toFixed(2) : '1.00';
-            const onlineNow = sum.online_now || (data.recent ? data.recent.length : 0);
+            const onlineNow = sum.online_now !== undefined ? sum.online_now : (data.recent ? (new Set(data.recent.map(r => r.visitor_id))).size : 1);
 
             document.getElementById('sumTotalViews').textContent = Number(totalViews).toLocaleString();
             document.getElementById('sumTotalVisitors').textContent = Number(totalVisitors).toLocaleString();

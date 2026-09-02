@@ -67,20 +67,25 @@ export async function onRequestGet(context) {
         `;
         const summary = (await db.prepare(summaryQuery).bind(...params).first()) || {};
 
-        // 2. Realtime active visitors
+        // 2. Realtime active visitors (Distinct unique visitors in last 3 minutes)
         let onlineParams = [];
-        let hbSiteCondition = "";
+        let siteFilterA = "";
+        let siteFilterB = "";
         if (siteId && siteId !== "all") {
-            hbSiteCondition = "AND site_id = ?";
-            onlineParams.push(siteId);
+            siteFilterA = "AND site_id = ?";
+            siteFilterB = "AND site_id = ?";
+            onlineParams.push(siteId, siteId);
         }
         const onlineQuery = `
-            SELECT COUNT(*) as online_count 
-            FROM heartbeats 
-            WHERE last_ping >= datetime('now', '-5 minutes') ${hbSiteCondition}
+            SELECT COUNT(DISTINCT visitor_id) as online_count 
+            FROM (
+                SELECT visitor_id FROM heartbeats WHERE last_ping >= datetime('now', '-3 minutes') ${siteFilterA}
+                UNION
+                SELECT visitor_id FROM pageviews WHERE created_at >= datetime('now', '-3 minutes') ${siteFilterB}
+            )
         `;
         const onlineRes = await db.prepare(onlineQuery).bind(...onlineParams).first();
-        const onlineCount = onlineRes ? onlineRes.online_count : 0;
+        const onlineCount = (onlineRes && onlineRes.online_count > 0) ? onlineRes.online_count : 0;
 
         // 3. Time Series Chart Data
         const isHourly = period === "today" || period === "yesterday";
