@@ -823,21 +823,18 @@
                             </div>
                         </td>
 
-                        <!-- Column 2: 5 Histats Action Icons -->
+                        <!-- Column 2: Histats Action Icons -->
                         <td class="histats-cell-actions" style="padding-right:16px;">
-                            <!-- 1. Open Site External -->
-                            <a href="http://${site.domain}" target="_blank" class="action-icon-btn" title="Buka Website di Tab Baru">↗</a>
-                            
-                            <!-- 2. Privacy & Lock Setting -->
+                            <!-- 1. Privacy & Lock Setting -->
                             <button class="action-icon-btn btn-lock" title="Setelan Akses & Privasi" onclick="openPrivacyModal('${site.id}', '${escapeHTML(site.domain)}')">🔒</button>
                             
-                            <!-- 3. View Stats Dashboard -->
+                            <!-- 2. View Stats Dashboard -->
                             <button class="action-icon-btn btn-chart" title="Lihat Dashboard & Grafik Statistik" onclick="openStats('${site.id}')">📊</button>
                             
-                            <!-- 4. Wrench / Get Code & Counter Wizard -->
+                            <!-- 3. Wrench / Get Code & Counter Wizard -->
                             <button class="action-icon-btn btn-wrench" title="Dapatkan Kode Tracker & Live Counter" onclick="openCodeModal('${site.id}', '${escapeHTML(site.domain)}')">🔧</button>
                             
-                            <!-- 5. Delete Site (Tombol X) -->
+                            <!-- 4. Delete Site (Tombol X) -->
                             <button class="action-icon-btn btn-delete" title="Hapus Website" onclick="confirmDeleteSite('${site.id}', '${escapeHTML(site.domain)}')">❌</button>
                         </td>
                     </tr>

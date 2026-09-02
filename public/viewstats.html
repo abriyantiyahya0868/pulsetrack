@@ -682,9 +682,9 @@
                 <div class="icon-bar-3"></div>
                 <div class="icon-bar-4"></div>
             </div>
-            <a href="javascript:void(0)" id="topDomainLink" target="_blank" class="site-domain-title">
-                <span id="headerSiteDomain">mobi.capegrace.com</span> ↗
-            </a>
+            <span class="site-domain-title" style="cursor:default;">
+                <span id="headerSiteDomain">mobi.capegrace.com</span>
+            </span>
         </div>
 
         <div class="header-action-buttons">
@@ -1217,7 +1217,6 @@
 
             // 1. Header Site Identity
             document.getElementById('headerSiteDomain').textContent = data.site_id || currentSiteId;
-            document.getElementById('topDomainLink').href = `http://${data.site_id || currentSiteId}`;
 
             // ================= RENDER VIEW 1: RINGKASAN =================
             const sum = data.summary || {};
@@ -1276,10 +1275,8 @@
                 popPagesBody.innerHTML = data.pages.slice(0, 5).map(p => `
                     <tr>
                         <td class="rank-cell-num">${p.views}</td>
-                        <td class="rank-cell-text">
-                            <a href="http://${currentSiteId}${p.path}" target="_blank" title="${escapeHTML(p.title || p.path)}">
-                                ↗ ${escapeHTML(p.title || p.path)}
-                            </a>
+                        <td class="rank-cell-text" style="color:#0f172a; font-weight:600;" title="${escapeHTML(p.title || p.path)}">
+                            📄 ${escapeHTML(p.title || p.path)}
                         </td>
                     </tr>
                 `).join('');
@@ -1293,15 +1290,13 @@
                 popRefBody.innerHTML = data.referrers.slice(0, 5).map(r => `
                     <tr>
                         <td class="rank-cell-num">${r.count}</td>
-                        <td class="rank-cell-text">
-                            <a href="http://${r.domain}" target="_blank">
-                                ↗ http://${escapeHTML(r.domain)}/
-                            </a>
+                        <td class="rank-cell-text" style="color:#0f172a; font-weight:600;">
+                            🌐 http://${escapeHTML(r.domain)}/
                         </td>
                     </tr>
                 `).join('');
             } else {
-                popRefBody.innerHTML = `<tr><td class="rank-cell-num">${totalViews || 1}</td><td class="rank-cell-text">↗ http://google.com/</td></tr>`;
+                popRefBody.innerHTML = `<tr><td class="rank-cell-num">${totalViews || 1}</td><td class="rank-cell-text" style="color:#0f172a; font-weight:600;">🌐 http://google.com/</td></tr>`;
             }
 
             // Geolocation
@@ -1337,7 +1332,7 @@
                                     </span>
                                 </div>
                                 <div style="font-size:10px; color:#64748b; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                                    ↗ ${escapeHTML(v.last_title || v.last_path || '/')}
+                                    📄 ${escapeHTML(v.last_title || v.last_path || '/')}
                                 </div>
                             </td>
                         </tr>
@@ -1383,10 +1378,8 @@
             return `
                 <tr>
                     <td class="recent-cell-time">${timeStr}</td>
-                    <td class="recent-cell-title">
-                        <a href="http://${currentSiteId}${item.path}" target="_blank" title="${escapeHTML(item.title || item.path)}">
-                            ↗ ${escapeHTML(item.title || item.path || 'Home')}
-                        </a>
+                    <td class="recent-cell-title" style="color:#0f172a; font-weight:600;" title="${escapeHTML(item.title || item.path)}">
+                        📄 ${escapeHTML(item.title || item.path || 'Home')}
                     </td>
                     <td class="recent-cell-geo">
                         ${escapeHTML(info.city)}
