@@ -1,2 +1,4 @@
-/dashboard /viewstats.html 302
-/dashboard.html /viewstats.html 302
+/viewstats.html /stats.html 302
+/viewstats /stats.html 302
+/dashboard.html /stats.html 302
+/dashboard /stats.html 302
