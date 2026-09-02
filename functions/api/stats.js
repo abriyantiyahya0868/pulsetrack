@@ -68,24 +68,29 @@ export async function onRequestGet(context) {
         const summary = (await db.prepare(summaryQuery).bind(...params).first()) || {};
 
         // 2. Realtime active visitors (Distinct unique visitors in last 3 minutes)
-        let onlineParams = [];
-        let siteFilterA = "";
-        let siteFilterB = "";
-        if (siteId && siteId !== "all") {
-            siteFilterA = "AND site_id = ?";
-            siteFilterB = "AND site_id = ?";
-            onlineParams.push(siteId, siteId);
+        let onlineCount = 0;
+        try {
+            let hbParams = [];
+            let hbSql = "SELECT COUNT(DISTINCT visitor_id) as c FROM heartbeats WHERE last_ping >= datetime('now', '-3 minutes')";
+            if (siteId && siteId !== "all") {
+                hbSql += " AND site_id = ?";
+                hbParams.push(siteId);
+            }
+            const hbRes = await db.prepare(hbSql).bind(...hbParams).first();
+
+            let pvParams = [];
+            let pvSql = "SELECT COUNT(DISTINCT visitor_id) as c FROM pageviews WHERE created_at >= datetime('now', '-3 minutes')";
+            if (siteId && siteId !== "all") {
+                pvSql += " AND site_id = ?";
+                pvParams.push(siteId);
+            }
+            const pvRes = await db.prepare(pvSql).bind(...pvParams).first();
+
+            onlineCount = Math.max(hbRes ? (hbRes.c || 0) : 0, pvRes ? (pvRes.c || 0) : 0);
+        } catch (err) {
+            console.error("Online calculation error:", err);
+            onlineCount = 0;
         }
-        const onlineQuery = `
-            SELECT COUNT(DISTINCT visitor_id) as online_count 
-            FROM (
-                SELECT visitor_id FROM heartbeats WHERE last_ping >= datetime('now', '-3 minutes') ${siteFilterA}
-                UNION
-                SELECT visitor_id FROM pageviews WHERE created_at >= datetime('now', '-3 minutes') ${siteFilterB}
-            )
-        `;
-        const onlineRes = await db.prepare(onlineQuery).bind(...onlineParams).first();
-        const onlineCount = (onlineRes && onlineRes.online_count > 0) ? onlineRes.online_count : 0;
 
         // 3. Time Series Chart Data
         const isHourly = period === "today" || period === "yesterday";
