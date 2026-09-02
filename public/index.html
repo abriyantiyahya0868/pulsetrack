@@ -313,75 +313,112 @@
         @media (max-width: 768px) {
             .histats-header {
                 padding: 10px 14px;
-                flex-direction: column;
-                gap: 8px;
-                align-items: stretch;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .histats-logo {
+                font-size: 17px;
+            }
+            .histats-logo span:last-child {
+                display: none; /* Hide Control Panel badge on small screens */
             }
             .histats-top-menu {
-                justify-content: space-between;
-                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 8px;
             }
             .main-container {
                 margin: 10px auto;
                 padding: 0 10px;
             }
             .histats-tabs-bar {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 8px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: 6px;
+                margin-bottom: 8px;
             }
             .tab-group-left {
-                width: 100%;
+                display: flex;
+                gap: 4px;
             }
             .histats-tab {
-                flex: 1;
-                justify-content: center;
-                padding: 8px 12px;
+                padding: 7px 12px;
+                font-size: 12px;
             }
             .btn-add-website {
-                justify-content: center;
+                padding: 6px 10px;
+                font-size: 12px;
                 background: #e0f2fe;
-                padding: 8px 12px;
+                border-radius: 4px;
             }
 
-            /* Responsive Table Conversion for Mobile */
+            /* Responsive Table Card for Mobile */
             .histats-table-header {
                 display: none;
+            }
+            .histats-panel-table {
+                background: transparent;
+                border: none;
+                box-shadow: none;
             }
             .histats-row {
                 display: flex;
                 flex-direction: column;
-                padding: 12px;
-                gap: 8px;
-                border-bottom: 2px solid #e2e8f0;
+                padding: 14px;
+                gap: 10px;
+                background: #ffffff;
+                border: 1px solid #cbd5e1;
+                border-radius: 8px;
+                margin-bottom: 12px;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.05);
             }
             .histats-cell-id {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
                 padding: 0;
-                font-size: 13px;
+                font-size: 12px;
+                font-weight: 700;
                 color: #64748b;
+                border-bottom: 1px dashed #e2e8f0;
+                padding-bottom: 6px;
             }
             .histats-cell-content {
                 padding: 0;
             }
             .histats-site-title {
-                font-size: 15px;
+                font-size: 16px;
+                font-weight: 800;
+                color: #0f172a;
             }
             .histats-stats-subline {
-                gap: 10px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                background: #f8fafc;
+                padding: 8px 10px;
+                border-radius: 6px;
+                border: 1px solid #f1f5f9;
+                margin-top: 6px;
                 font-size: 11.5px;
             }
             .histats-cell-actions {
-                padding: 6px 0 0 0;
-                text-align: left;
+                padding: 8px 0 0 0;
                 width: 100%;
-                display: flex;
-                justify-content: space-between;
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                gap: 6px;
+                border-top: 1px solid #f1f5f9;
             }
             .action-icon-btn {
-                width: 36px;
-                height: 36px;
-                font-size: 15px;
+                width: 100%;
+                height: 38px;
+                font-size: 16px;
                 margin-left: 0;
+                border-radius: 6px;
             }
         }
 
@@ -553,11 +590,7 @@
             ⚡ Pulse<span>Track</span> <span style="font-size:12px; background:rgba(255,255,255,0.15); padding:2px 8px; border-radius:4px; font-weight:600; color:#ffffff;">Control Panel</span>
         </a>
         <div class="histats-top-menu">
-            <a href="/home.html">🏠 Home</a>
-            <span id="userSessionBadge" style="background:rgba(255,255,255,0.1); padding:4px 10px; border-radius:4px; font-size:12px; color:#e0f2fe; display:inline-flex; align-items:center; gap:6px;">
-                👤 <span id="userEmailDisplay">Loading...</span>
-            </span>
-            <a href="javascript:void(0)" onclick="logoutUser()" style="background:#dc2626; color:#ffffff; font-weight:700;">Logout 🚪</a>
+            <a href="/home.html" style="background:rgba(255,255,255,0.15); color:#ffffff; font-weight:700; padding:6px 14px; border-radius:4px; text-decoration:none;">🏠 Home</a>
         </div>
     </header>
 
