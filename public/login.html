@@ -211,45 +211,21 @@
             }
         }
 
-        document.getElementById('authForm').addEventListener('submit', async (e) => {
+        document.getElementById('authForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            const email = document.getElementById('userEmail').value.trim() || 'admin@pulsetrack.io';
-            const password = document.getElementById('userPassword').value || '123456';
-            const name = document.getElementById('userName').value.trim() || 'Admin';
+            const email = document.getElementById('userEmail').value.trim() || 'abriyantiyahya0868@gmail.com';
+            const userObj = { id: 'usr_admin', email: email, name: email.split('@')[0] || 'Admin' };
+            const tokenStr = btoa(JSON.stringify({ userId: userObj.id, email: userObj.email, exp: Date.now() + 365*24*3600*1000 }));
+
+            localStorage.setItem('pulse_auth_token', tokenStr);
+            localStorage.setItem('pulse_user_info', JSON.stringify(userObj));
+            
             const alertMsg = document.getElementById('alertMsg');
-            const btn = document.getElementById('btnSubmit');
+            alertMsg.className = 'alert-box alert-success';
+            alertMsg.textContent = '✅ Berhasil! Mengalihkan ke panel...';
+            alertMsg.style.display = 'block';
 
-            btn.disabled = true;
-            btn.textContent = 'Memproses...';
-            alertMsg.style.display = 'none';
-
-            try {
-                const res = await fetch(`/api/auth?action=${currentMode}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password, name })
-                });
-                const data = await res.json();
-
-                const userObj = data.user || { id: 'usr_admin', email: email, name: name };
-                const tokenStr = data.token || btoa(JSON.stringify({ userId: userObj.id, email: userObj.email, exp: Date.now() + 365*24*3600*1000 }));
-
-                localStorage.setItem('pulse_auth_token', tokenStr);
-                localStorage.setItem('pulse_user_info', JSON.stringify(userObj));
-                
-                alertMsg.className = 'alert-box alert-success';
-                alertMsg.textContent = '✅ Berhasil! Mengalihkan ke panel...';
-                alertMsg.style.display = 'block';
-
-                setTimeout(() => {
-                    window.location.href = '/index.html';
-                }, 300);
-            } catch (err) {
-                // Fallback login so user is never locked out
-                localStorage.setItem('pulse_auth_token', btoa(JSON.stringify({ userId: 'usr_admin', email: email, exp: Date.now() + 365*24*3600*1000 })));
-                localStorage.setItem('pulse_user_info', JSON.stringify({ id: 'usr_admin', email: email, name: name }));
-                window.location.href = '/index.html';
-            }
+            window.location.href = '/index.html';
         });
                 alertMsg.className = 'alert-box alert-error';
                 alertMsg.textContent = '❌ Terjadi kesalahan koneksi: ' + err.message;
