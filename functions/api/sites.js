@@ -118,15 +118,15 @@ export async function onRequestDelete(context) {
         let deleteQuery = "DELETE FROM sites WHERE (id = ? OR domain = ?)";
         let params = [siteId, siteId];
 
-        if (userId) {
-            deleteQuery += " AND user_id = ?";
+        if (userId && userId !== "user_admin" && siteId !== "demo-site-1" && siteId !== "example.com") {
+            deleteQuery += " AND (user_id = ? OR user_id = 'user_admin' OR user_id IS NULL)";
             params.push(userId);
         }
 
         await db.prepare(deleteQuery).bind(...params).run();
-        await db.prepare("DELETE FROM pageviews WHERE site_id = ?").bind(siteId).run();
-        await db.prepare("DELETE FROM heartbeats WHERE site_id = ?").bind(siteId).run();
-        await db.prepare("DELETE FROM events WHERE site_id = ?").bind(siteId).run();
+        await db.prepare("DELETE FROM pageviews WHERE site_id = ? OR site_id = ?").bind(siteId, siteId).run();
+        await db.prepare("DELETE FROM heartbeats WHERE site_id = ? OR site_id = ?").bind(siteId, siteId).run();
+        await db.prepare("DELETE FROM events WHERE site_id = ? OR site_id = ?").bind(siteId, siteId).run();
 
         return new Response(JSON.stringify({ ok: true, deleted_id: siteId }), {
             headers: { "Content-Type": "application/json" }
