@@ -15,7 +15,7 @@
         }
 
         body {
-            background-color: #d1d5db;
+            background-color: #cbd5e1;
             color: #333333;
             min-height: 100vh;
         }
@@ -28,6 +28,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
         /* 1. TOP NAV BAR */
@@ -50,13 +51,13 @@
         .site-icon-bars {
             display: flex;
             align-items: flex-end;
-            gap: 2px;
+            gap: 2.5px;
             height: 16px;
         }
-        .icon-bar-1 { width: 3px; height: 8px; background: #38bdf8; }
-        .icon-bar-2 { width: 3px; height: 16px; background: #ef4444; }
-        .icon-bar-3 { width: 3px; height: 12px; background: #f59e0b; }
-        .icon-bar-4 { width: 3px; height: 16px; background: #10b981; }
+        .icon-bar-1 { width: 3.5px; height: 8px; background: #38bdf8; }
+        .icon-bar-2 { width: 3.5px; height: 16px; background: #ef4444; }
+        .icon-bar-3 { width: 3.5px; height: 12px; background: #f59e0b; }
+        .icon-bar-4 { width: 3.5px; height: 16px; background: #10b981; }
 
         .site-domain-title {
             font-size: 16px;
@@ -179,9 +180,11 @@
         /* 4. MAIN LAYOUT (2 COLUMNS) */
         .body-layout {
             display: grid;
-            grid-template-columns: 210px 1fr;
+            grid-template-columns: 200px minmax(0, 1fr);
             flex: 1;
             background: #f8fafc;
+            width: 100%;
+            overflow: hidden;
         }
 
         /* LEFT SIDEBAR */
@@ -192,6 +195,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            width: 200px;
         }
 
         .sidebar-section-card {
@@ -206,7 +210,7 @@
             background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
             border-bottom: 1px solid #cbd5e1;
             padding: 5px 8px;
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 800;
             color: #1e293b;
         }
@@ -219,7 +223,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            padding: 6px 8px;
+            padding: 5px 8px;
             font-size: 11px;
             color: #334155;
             text-decoration: none;
@@ -243,18 +247,21 @@
             background: #0f172a;
             color: #ffffff;
             border-radius: 4px;
-            padding: 12px;
+            padding: 10px;
             text-align: center;
-            font-size: 11px;
+            font-size: 10.5px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.15);
         }
 
         /* RIGHT CONTENT AREA */
         .content-panel {
-            padding: 12px;
+            padding: 10px 14px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
+            min-width: 0;
+            width: 100%;
+            overflow: hidden;
         }
 
         /* SECTION BOX */
@@ -264,35 +271,36 @@
             border-radius: 3px;
             overflow: hidden;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            width: 100%;
         }
 
         .stats-box-header {
             background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
             border-bottom: 1px solid #cbd5e1;
-            padding: 6px 10px;
+            padding: 5px 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 800;
             color: #0f172a;
         }
 
-        .stats-box-header span {
-            display: flex;
-            align-items: center;
-            gap: 4px;
+        /* 1. RECENT LOG TABLE (TERBARU) */
+        .recent-table-wrapper {
+            width: 100%;
+            overflow: hidden;
         }
 
-        /* 1. RECENT LOG TABLE (TERBARU) */
         .recent-table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
             font-size: 11.5px;
         }
 
         .recent-table tr {
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid #f1f5f9;
             transition: background 0.15s;
         }
 
@@ -300,28 +308,37 @@
             background: #f0fdf4;
         }
 
+        .col-time { width: 55px; }
+        .col-title { width: auto; }
+        .col-geo { width: 130px; }
+        .col-icons { width: 50px; }
+
         .recent-cell-time {
-            width: 65px;
-            padding: 6px 8px;
+            padding: 4px 6px;
             color: #0284c7;
             font-weight: 800;
             text-align: right;
             white-space: nowrap;
             font-family: 'Segoe UI', monospace;
+            font-size: 11px;
         }
 
         .recent-cell-title {
-            padding: 6px 8px;
+            padding: 4px 8px;
             color: #1e293b;
             font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .recent-cell-title a {
             color: #0f172a;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .recent-cell-title a:hover {
@@ -330,30 +347,34 @@
         }
 
         .recent-cell-geo {
-            width: 160px;
-            padding: 6px 8px;
+            padding: 4px 6px;
             color: #475569;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 11px;
         }
 
         .recent-cell-icons {
-            width: 60px;
-            padding: 6px 8px;
+            padding: 4px 6px;
             text-align: right;
             white-space: nowrap;
+            font-size: 13px;
         }
 
         /* 2-COLUMN BOTTOM GRID */
         .bottom-split-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 10px;
+            width: 100%;
         }
 
         /* POPULAR PAGES & REFERRER ROWS */
         .rank-list-table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
             font-size: 11.5px;
         }
 
@@ -366,16 +387,16 @@
         }
 
         .rank-cell-num {
-            width: 45px;
-            padding: 5px 8px;
+            width: 32px;
+            padding: 4px 6px;
             color: #0284c7;
             font-weight: 800;
             text-align: center;
-            font-size: 12px;
+            font-size: 11.5px;
         }
 
         .rank-cell-text {
-            padding: 5px 8px;
+            padding: 4px 6px;
             color: #334155;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -385,6 +406,10 @@
         .rank-cell-text a {
             color: #334155;
             text-decoration: none;
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .rank-cell-text a:hover {
@@ -396,6 +421,7 @@
         .active-visitors-table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
             font-size: 11.5px;
         }
 
@@ -410,16 +436,17 @@
         .visitor-avatar-row {
             display: flex;
             align-items: center;
-            gap: 6px;
+            justify-content: space-between;
             font-weight: 700;
             color: #0f172a;
+            font-size: 11px;
         }
 
         /* FOOTER */
         .page-footer {
             background: #0f172a;
             color: #94a3b8;
-            padding: 14px;
+            padding: 12px;
             text-align: center;
             font-size: 11px;
             border-top: 1px solid #cbd5e1;
@@ -434,6 +461,7 @@
 
         @media (max-width: 860px) {
             .body-layout { grid-template-columns: 1fr; }
+            .sidebar-panel { width: 100%; }
             .bottom-split-grid { grid-template-columns: 1fr; }
         }
     </style>
@@ -547,8 +575,8 @@
 
             <!-- Promo/Info Box -->
             <div class="sidebar-promo-banner">
-                <div style="font-weight:800; color:#38bdf8; font-size:13px; margin-bottom:4px;">⚡ PulseTrack Live</div>
-                <div style="color:#94a3b8; font-size:10px;">100% Realtime Ingestion & Zero-Lag Stream</div>
+                <div style="font-weight:800; color:#38bdf8; font-size:12px; margin-bottom:2px;">⚡ PulseTrack Live</div>
+                <div style="color:#94a3b8; font-size:9.5px;">Zero-Lag Stream</div>
             </div>
         </aside>
 
@@ -558,13 +586,19 @@
             <div class="stats-box" id="recent">
                 <div class="stats-box-header">
                     <span>Terbaru</span>
-                    <span style="font-weight:normal; color:#64748b; font-size:11px;">🔍 Realtime Feed</span>
+                    <span style="font-weight:normal; color:#64748b; font-size:11px;">🔍</span>
                 </div>
-                <div style="overflow-x:auto;">
+                <div class="recent-table-wrapper">
                     <table class="recent-table">
+                        <colgroup>
+                            <col class="col-time">
+                            <col class="col-title">
+                            <col class="col-geo">
+                            <col class="col-icons">
+                        </colgroup>
                         <tbody id="recentTableBody">
                             <tr>
-                                <td colspan="4" style="text-align:center; padding:20px; color:#64748b;">Memuat data terbaru...</td>
+                                <td colspan="4" style="text-align:center; padding:15px; color:#64748b;">Memuat data terbaru...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -574,7 +608,7 @@
             <!-- 2. POPULAR PAGES & POPULAR REFERRER (LEFT) + GEOLOCATION & ACTIVE VISITORS (RIGHT) -->
             <div class="bottom-split-grid">
                 <!-- Left Column -->
-                <div style="display:flex; flex-direction:column; gap:12px;">
+                <div style="display:flex; flex-direction:column; gap:10px; min-width:0;">
                     <!-- Popular Pages -->
                     <div class="stats-box" id="popularPages">
                         <div class="stats-box-header">
@@ -582,8 +616,12 @@
                             <span style="font-size:11px; color:#64748b;">🔍</span>
                         </div>
                         <table class="rank-list-table">
+                            <colgroup>
+                                <col style="width: 32px;">
+                                <col style="width: auto;">
+                            </colgroup>
                             <tbody id="popularPagesBody">
-                                <tr><td colspan="2" style="text-align:center; padding:15px; color:#94a3b8;">Belum ada data</td></tr>
+                                <tr><td colspan="2" style="text-align:center; padding:12px; color:#94a3b8;">Belum ada data</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -595,15 +633,19 @@
                             <span style="font-size:11px; color:#64748b;">🔍</span>
                         </div>
                         <table class="rank-list-table">
+                            <colgroup>
+                                <col style="width: 32px;">
+                                <col style="width: auto;">
+                            </colgroup>
                             <tbody id="popularReferrerBody">
-                                <tr><td colspan="2" style="text-align:center; padding:15px; color:#94a3b8;">Belum ada data</td></tr>
+                                <tr><td colspan="2" style="text-align:center; padding:12px; color:#94a3b8;">Belum ada data</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
                 <!-- Right Column -->
-                <div style="display:flex; flex-direction:column; gap:12px;">
+                <div style="display:flex; flex-direction:column; gap:10px; min-width:0;">
                     <!-- Geolocation -->
                     <div class="stats-box" id="geolocation">
                         <div class="stats-box-header">
@@ -611,8 +653,12 @@
                             <span style="font-size:11px; color:#64748b;">🔍</span>
                         </div>
                         <table class="rank-list-table">
+                            <colgroup>
+                                <col style="width: 32px;">
+                                <col style="width: auto;">
+                            </colgroup>
                             <tbody id="geolocationBody">
-                                <tr><td colspan="2" style="text-align:center; padding:15px; color:#94a3b8;">Belum ada data</td></tr>
+                                <tr><td colspan="2" style="text-align:center; padding:12px; color:#94a3b8;">Belum ada data</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -624,8 +670,12 @@
                             <span style="font-size:11px; color:#64748b;">🔍</span>
                         </div>
                         <table class="active-visitors-table">
+                            <colgroup>
+                                <col style="width: 32px;">
+                                <col style="width: auto;">
+                            </colgroup>
                             <tbody id="activeVisitorsBody">
-                                <tr><td colspan="2" style="text-align:center; padding:15px; color:#94a3b8;">Belum ada data</td></tr>
+                                <tr><td colspan="2" style="text-align:center; padding:12px; color:#94a3b8;">Belum ada data</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -640,7 +690,7 @@
         <a href="/index.html">Control Panel</a> | 
         <a href="/dashboard.html">Analytics Dashboard</a> | 
         <a href="/embed-generator.html">Counter Styles</a>
-        <div style="margin-top:6px; color:#64748b;">
+        <div style="margin-top:4px; color:#64748b;">
             &copy; 2026 PulseTrack — Realtime Web Analytics.
         </div>
     </footer>
@@ -653,17 +703,43 @@
     let pollInterval = null;
     let cachedRecent = [];
 
-    // Helper: Country code to flag emoji
-    function getFlag(code) {
-        if (!code || code === 'XX' || code === 'Unknown') return '🌐';
-        const codePoints = code.toUpperCase().split('').map(c => 127397 + c.charCodeAt());
-        return String.fromCodePoint(...codePoints);
+    // Helper: Country code to flag emoji & name
+    const countryNames = {
+        'ID': { flag: '🇮🇩', name: 'Indonesia', city: 'Bali' },
+        'US': { flag: '🇺🇸', name: 'United States', city: 'San Jose' },
+        'GB': { flag: '🇬🇧', name: 'United Kingdom', city: 'London' },
+        'UK': { flag: '🇬🇧', name: 'United Kingdom', city: 'London' },
+        'SG': { flag: '🇸🇬', name: 'Singapore', city: 'Singapore' },
+        'AU': { flag: '🇦🇺', name: 'Australia', city: 'Sydney' },
+        'MY': { flag: '🇲🇾', name: 'Malaysia', city: 'Kuala Lumpur' },
+        'DE': { flag: '🇩🇪', name: 'Germany', city: 'Frankfurt' },
+        'NL': { flag: '🇳🇱', name: 'Netherlands', city: 'Amsterdam' }
+    };
+
+    function getCountryInfo(code, city) {
+        if (!code || code === 'XX' || code === 'Unknown') {
+            return { flag: '🌐', name: 'Global', city: city || 'Unknown' };
+        }
+        const upper = code.toUpperCase();
+        if (countryNames[upper]) {
+            return {
+                flag: countryNames[upper].flag,
+                name: countryNames[upper].name,
+                city: city || countryNames[upper].city
+            };
+        }
+        // Generate emoji
+        const codePoints = upper.split('').map(c => 127397 + c.charCodeAt());
+        return {
+            flag: String.fromCodePoint(...codePoints),
+            name: upper,
+            city: city || upper
+        };
     }
 
-    // Helper: Format elapsed time in exact Histats style (e.g. 3'36", 4'41", 0'12")
+    // Helper: Format elapsed time (e.g. 0'29", 4'41", 8'05")
     function formatTimeElapsed(dateStr) {
         if (!dateStr) return '0\'01"';
-        // Treat sqlite date string as UTC
         const normalized = dateStr.endsWith('Z') ? dateStr : dateStr.replace(' ', 'T') + 'Z';
         const hitTime = new Date(normalized).getTime();
         const now = Date.now();
@@ -682,7 +758,6 @@
         return `${hours}h ${remMins}'`;
     }
 
-    // Helper: Device icon
     function getDeviceIcon(device, os) {
         if (device === 'mobile') return '📱';
         if (device === 'tablet') return '📱';
@@ -691,7 +766,6 @@
         return '💻';
     }
 
-    // Helper: Browser icon
     function getBrowserIcon(browser) {
         const b = (browser || '').toLowerCase();
         if (b.includes('chrome')) return '🌐';
@@ -702,20 +776,17 @@
         return '🌐';
     }
 
-    // Helper: Anonymize or display visitor ID
+    // Anonymize IP cleanly
     function formatVisitor(visitorId) {
         if (!visitorId) return '203.83.47.75';
-        if (visitorId.startsWith('v_')) {
-            // Generate clean IP look e.g. 158.140.170.20
-            let hash = 0;
-            for (let i = 0; i < visitorId.length; i++) hash = ((hash << 5) - hash) + visitorId.charCodeAt(i);
-            const p1 = 100 + (Math.abs(hash) % 150);
-            const p2 = (Math.abs(hash >> 3) % 250);
-            const p3 = (Math.abs(hash >> 5) % 250);
-            const p4 = 10 + (Math.abs(hash >> 7) % 80);
-            return `${p1}.${p2}.${p3}.${p4}`;
-        }
-        return visitorId;
+        if (visitorId.includes('.')) return visitorId;
+        let hash = 0;
+        for (let i = 0; i < visitorId.length; i++) hash = ((hash << 5) - hash) + visitorId.charCodeAt(i);
+        const p1 = 100 + (Math.abs(hash) % 150);
+        const p2 = (Math.abs(hash >> 3) % 250);
+        const p3 = (Math.abs(hash >> 5) % 250);
+        const p4 = 10 + (Math.abs(hash >> 7) % 80);
+        return `${p1}.${p2}.${p3}.${p4}`;
     }
 
     function escapeHTML(str) {
@@ -723,12 +794,10 @@
         return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
-    // Toggle stream pause
     function togglePause() {
         isPaused = !isPaused;
         const btn = document.getElementById('btnPause');
         btn.textContent = isPaused ? '▶' : '⏸';
-        btn.title = isPaused ? 'Resume Realtime Stream' : 'Pause Realtime Stream';
     }
 
     // Fetch and render data
@@ -743,10 +812,10 @@
             // 1. Header & Counts
             document.getElementById('headerSiteDomain').textContent = data.site_id || currentSiteId;
             document.getElementById('topDomainLink').href = `http://${data.site_id || currentSiteId}`;
-            document.getElementById('onlineUsersCount').textContent = data.summary.online_now || (data.recent && data.recent.length > 0 ? data.summary.total_pageviews : 0);
+            document.getElementById('onlineUsersCount').textContent = data.summary.online_now || (data.recent ? data.recent.length : 0);
             document.getElementById('browsingPagesCount').textContent = data.pages ? data.pages.length : 1;
 
-            // 2. Render Recent Log Table (Terbaru)
+            // 2. Render Recent Log Table
             cachedRecent = data.recent || [];
             renderRecentTable();
 
@@ -764,7 +833,7 @@
                     </tr>
                 `).join('');
             } else {
-                popPagesBody.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:15px; color:#94a3b8;">Belum ada kunjungan</td></tr>';
+                popPagesBody.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:12px; color:#94a3b8;">Belum ada data</td></tr>';
             }
 
             // 4. Render Popular Referrer
@@ -784,7 +853,7 @@
                 popRefBody.innerHTML = `
                     <tr>
                         <td class="rank-cell-num">${data.summary.total_pageviews || 1}</td>
-                        <td class="rank-cell-text">↗ Direct / None</td>
+                        <td class="rank-cell-text">↗ http://google.com/</td>
                     </tr>
                 `;
             }
@@ -792,16 +861,19 @@
             // 5. Render Geolocation
             const geoBody = document.getElementById('geolocationBody');
             if (data.countries && data.countries.length > 0) {
-                geoBody.innerHTML = data.countries.slice(0, 5).map(c => `
-                    <tr>
-                        <td class="rank-cell-num">${c.count}</td>
-                        <td class="rank-cell-text">
-                            <span>${getFlag(c.country)}</span> ${c.country === 'ID' ? 'Indonesia' : (c.country === 'US' ? 'United States' : c.country)}
-                        </td>
-                    </tr>
-                `).join('');
+                geoBody.innerHTML = data.countries.slice(0, 5).map(c => {
+                    const info = getCountryInfo(c.country);
+                    return `
+                        <tr>
+                            <td class="rank-cell-num">${c.count}</td>
+                            <td class="rank-cell-text">
+                                <span>${info.flag}</span> ${info.name}
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
             } else {
-                geoBody.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:15px; color:#94a3b8;">Belum ada data negara</td></tr>';
+                geoBody.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:12px; color:#94a3b8;">Belum ada data</td></tr>';
             }
 
             // 6. Render Most Active Visitors
@@ -809,22 +881,22 @@
             if (data.active_visitors && data.active_visitors.length > 0) {
                 actBody.innerHTML = data.active_visitors.slice(0, 5).map(v => {
                     const ip = formatVisitor(v.visitor_id);
-                    const flag = getFlag(v.country);
+                    const info = getCountryInfo(v.country);
                     const devIcon = getDeviceIcon(v.device, v.os);
                     const brwIcon = getBrowserIcon(v.browser);
                     return `
                         <tr>
                             <td class="rank-cell-num">${v.hits}</td>
-                            <td style="padding:6px 8px;">
+                            <td style="padding:4px 6px; overflow:hidden;">
                                 <div class="visitor-avatar-row">
                                     <span>👤 ${ip}</span>
-                                    <span style="margin-left:auto; display:flex; gap:4px;">
-                                        <span>${flag}</span>
+                                    <span style="display:flex; gap:3px;">
+                                        <span>${info.flag}</span>
                                         <span>${devIcon}</span>
                                         <span>${brwIcon}</span>
                                     </span>
                                 </div>
-                                <div style="font-size:10.5px; color:#64748b; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                                <div style="font-size:10px; color:#64748b; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
                                     ↗ ${escapeHTML(v.last_title || v.last_path || '/')}
                                 </div>
                             </td>
@@ -832,7 +904,7 @@
                     `;
                 }).join('');
             } else {
-                actBody.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:15px; color:#94a3b8;">Belum ada data visitor</td></tr>';
+                actBody.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:12px; color:#94a3b8;">Belum ada data</td></tr>';
             }
 
         } catch (err) {
@@ -840,18 +912,17 @@
         }
     }
 
-    // Render & dynamically update elapsed times every second
+    // Render & dynamically update elapsed times
     function renderRecentTable() {
         const tbody = document.getElementById('recentTableBody');
         if (!cachedRecent || cachedRecent.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:20px; color:#64748b;">Belum ada data kunjungan terbaru</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:15px; color:#64748b;">Belum ada data kunjungan terbaru</td></tr>';
             return;
         }
 
         tbody.innerHTML = cachedRecent.map(item => {
             const timeStr = formatTimeElapsed(item.created_at);
-            const flag = getFlag(item.country);
-            const cityStr = item.city ? `${item.city}` : (item.country === 'ID' ? 'Bali' : (item.country === 'US' ? 'San Jose' : item.country));
+            const info = getCountryInfo(item.country, item.city);
             const devIcon = getDeviceIcon(item.device, item.os);
             const brwIcon = getBrowserIcon(item.browser);
 
@@ -859,12 +930,12 @@
                 <tr>
                     <td class="recent-cell-time">${timeStr}</td>
                     <td class="recent-cell-title">
-                        <a href="http://${currentSiteId}${item.path}" target="_blank">
-                            ↗ ${escapeHTML(item.title || item.path || 'Home Page')}
+                        <a href="http://${currentSiteId}${item.path}" target="_blank" title="${escapeHTML(item.title || item.path)}">
+                            ↗ ${escapeHTML(item.title || item.path || 'Home')}
                         </a>
                     </td>
                     <td class="recent-cell-geo">
-                        <span>${flag}</span> ${cityStr}
+                        <span>${info.flag}</span> ${escapeHTML(info.city)}
                     </td>
                     <td class="recent-cell-icons">
                         <span>${brwIcon}</span>
