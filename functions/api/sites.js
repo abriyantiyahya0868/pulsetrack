@@ -12,7 +12,6 @@ export async function onRequestGet(context) {
     }
 
     try {
-        const userId = getUserIdFromHeader(request) || "user_admin";
         const todayStr = new Date().toISOString().split("T")[0];
 
         const query = `
@@ -23,11 +22,10 @@ export async function onRequestGet(context) {
                    (SELECT COUNT(DISTINCT visitor_id) FROM pageviews WHERE site_id = s.id AND created_at >= '${todayStr} 00:00:00') as visitors_today,
                    (SELECT COUNT(*) FROM heartbeats WHERE site_id = s.id AND last_ping >= datetime('now', '-5 minutes')) as online_now
             FROM sites s
-            WHERE s.user_id = ? OR s.user_id IS NULL OR s.user_id = 'user_admin' OR ? = 'user_admin'
             ORDER BY s.created_at DESC
         `;
 
-        const sites = (await db.prepare(query).bind(userId, userId).all()).results || [];
+        const sites = (await db.prepare(query).all()).results || [];
 
         return new Response(JSON.stringify({ ok: true, sites }), {
             headers: { "Content-Type": "application/json" }
